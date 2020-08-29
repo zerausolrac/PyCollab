@@ -1,4 +1,4 @@
-# Use: python -m pip install -r requirements.txt
+# Use: python3 -m pip install -r requerimientos.txt
 aiohttp==3.6.2
 async-timeout==3.0.1
 attrs==19.3.0
@@ -30,3 +30,4 @@ urllib3==1.25.9
 yarl==1.4.2
 cachetools==4.0.0
 PyJWT==1.7.1
+tqdm==4.48.2
