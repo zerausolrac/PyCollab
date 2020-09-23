@@ -12,5 +12,5 @@ pip3 install -r requerimientos.txt
 ## 3 Run the script
 
 ```
-python3 Collab.py
+python3 Collab.py -f cursos.txt -w 12
 ```

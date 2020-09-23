@@ -2,6 +2,8 @@ import datetime
 import requests
 from tqdm import tqdm 
 from webService import WebService
+import csv
+import sys,getopt
 
 webService = WebService()
 
@@ -13,9 +15,8 @@ def listaGrabaciones(recordings):
           if number_of_recordings <= 0:
              return None
           while x < number_of_recordings:
-             recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'] })
+             recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":recordings['results'][x]['storageSize'],"created": recordings['results'][x]['created']})
              x += 1
-          #print(str(recordinglist))
           return recordinglist
         except TypeError:
          return None
@@ -43,3 +44,67 @@ def downloadrecording(recording_list, name, course_uuid):
         print(fullpath + filename)
         descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
        
+
+def crearReporte(reporte):
+   filename = "recordingReport.csv"
+   header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
+   file = open(filename, 'w')
+   writer = csv.writer(file)
+   writer.writerow(header)
+   for x in range(len(reporte)):
+      registro = reporte[x]
+      recording_id = registro[0]
+      recording_name = registro[1]
+      duration = calcularTiempo(int(registro[2]/1000))
+      storage = str(round(float(registro[3])/1000000, 2))
+      created = convertirFecha(registro[4])
+      writer.writerow([recording_id,recording_name,duration,storage,created])
+   file.close()
+   return "Reporte: recordingReport.csv creado"
+
+
+
+def leerCursos(filename):
+   cursos = []
+   with open(filename) as reader:
+      for linea in reader:
+         contenido = linea.rstrip()
+         cursos.append(str(contenido))
+   reader.close()
+   return cursos
+
+
+
+
+def main(argv):
+    archivoCursos = ''
+    semanas = 0
+    try:
+        opts,args = getopt.getopt(argv,"hf:w:", ["cfile=","weeks="])
+    except getopt.GetoptError:
+        print('Collab.py -f <nombreArchivoCursos> -w <semanasAtrasBusqueda>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print('Collab.py -f <nombreArchivoCursos> -w <semanasAtrasBusqueda>')
+            sys.exit()
+        elif opt in ('-f', '--cfile'):
+            archivoCursos = arg
+        elif opt in ('-w', '--weeks'):
+            semanas = int(arg)
+    return [archivoCursos,semanas]
+
+
+def calcularTiempo(s):
+   m, s = divmod(s,60)
+   h,m = divmod(m,60)
+   d, h = divmod(h,24)
+   tiempoEnSesion =  datetime.time(h,m,s)
+   return tiempoEnSesion.strftime('%H:%M:%S')
+
+
+def convertirFecha(fecha):
+   objetoFecha = datetime.datetime.strptime(fecha,'%Y-%m-%dT%H:%M:%S.%fZ')
+   return objetoFecha.strftime('%b %d,%Y')
+
+

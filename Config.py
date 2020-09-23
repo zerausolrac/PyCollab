@@ -7,3 +7,4 @@ credenciales = {
     "collab_secret": "Collab Secret",
     "collab_base_url": "us.bbcollab.com/collab/api/csa"
 }
+

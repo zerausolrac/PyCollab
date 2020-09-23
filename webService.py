@@ -60,6 +60,7 @@ class WebService():
         parsed_json = json.loads(r.text)
         return parsed_json['uuid']
 
+
     def getGrabaciones(self,cursoUUID,tiempo):
         sesionCollab = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
         grabaciones = sesionCollab.getGrabaciones(cursoUUID,tiempo)
