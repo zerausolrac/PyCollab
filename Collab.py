@@ -23,7 +23,7 @@ if __name__ == "__main__":
         else:
             for grabacion in grabaciones:
                 report.append([grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
-            #ut.downloadrecording(grabaciones,cuuid,cuuid)       
+            ut.downloadrecording(grabaciones,cuuid,cuuid)       
     print(ut.crearReporte(report))
     
         
