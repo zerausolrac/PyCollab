@@ -24,7 +24,7 @@ edit content of Config.py file
 
 ## 4 Modify list of courses ID
 ```
-edit cursos.txt file
+edit cursos.txt file or edit uuid.txt file
 ```
 
 
