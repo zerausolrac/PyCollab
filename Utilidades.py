@@ -60,7 +60,7 @@ def crearReporte(reporte):
       created = convertirFecha(registro[4])
       writer.writerow([recording_id,recording_name,duration,storage,created])
    file.close()
-   return "Reporte: recordingReport.csv creado"
+   return "Report: recordingReport.csv created!"
 
 
 
@@ -74,25 +74,39 @@ def leerCursos(filename):
    return cursos
 
 
+def leerUUID(filename):
+   uuids = []
+   with open(filename) as reader:
+      for linea in reader:
+         contenido = linea.rstrip()
+         uuids.append(str(contenido))
+   reader.close()
+   return uuids
 
 
 def main(argv):
     archivoCursos = ''
+    archivoUUID = ''
     semanas = 0
     try:
-        opts,args = getopt.getopt(argv,"hf:w:", ["cfile=","weeks="])
+        opts,args = getopt.getopt(argv,"hf:e:w:", ["cfile=","ext=","weeks="])
     except getopt.GetoptError:
         print('Collab.py -f <nombreArchivoCursos> -w <semanasAtrasBusqueda>')
+        print('Collab.py -e <nombreArchivoUUID> -w <semanasAtrasBusqueda>')
         sys.exit(2)
     for opt,arg in opts:
         if opt == '-h':
             print('Collab.py -f <nombreArchivoCursos> -w <semanasAtrasBusqueda>')
+            print('Collab.py -e <nombreArchivoUUID> -w <semanasAtrasBusqueda>')
             sys.exit()
         elif opt in ('-f', '--cfile'):
             archivoCursos = arg
         elif opt in ('-w', '--weeks'):
             semanas = int(arg)
-    return [archivoCursos,semanas]
+        elif opt in ('-e', '--ext'):
+            archivoUUID = arg
+
+    return [archivoCursos, archivoUUID,semanas]
 
 
 def calcularTiempo(s):
