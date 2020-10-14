@@ -56,11 +56,10 @@ class JotControlador():
        if self.jcache != None:
             try:
                token = self.jcache["jwtoken"]
-               return   
+               return token
             except KeyError: 
                pass
-            except TypeError:
-               pass
+            
         
        r = requests.post(endpoint, data=self.payload, auth=(self.key, self.secret), verify=self.cert)
        if r.status_code == 200:
@@ -71,15 +70,12 @@ class JotControlador():
             print("[auth:jotToken()] ERROR: " + str(r))
 
 
+
     def getJot(self):
-       if self.jcache != None:
-         try:
-               token = self.jcache['jwtoken']
-               return token
-         except KeyError:
-               self.setJot()
-               self.jcache['jwtoken']
-         except TypeError:
-               self.setJot()
-               self.jcache['jwtoken']
+      try:
+            token = self.jcache['jwtoken']
+            return token
+      except KeyError:
+            self.setJot()
+            return self.jcache['jwtoken']   
 

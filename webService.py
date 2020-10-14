@@ -1,16 +1,17 @@
-import requests
+
 import json
 import Config
 import sys
 import datetime
-import urllib.request
 import time 
+import requests
 
 from tqdm import tqdm 
 
 from controladores import AuthControlador
 from controladores import JotControlador
 from controladores import SesionControlador
+from controladores import MoodleControlador
 
 class WebService():
     
@@ -34,6 +35,7 @@ class WebService():
          self.sesion.setToken()
          return(self.sesion.getToken())
 
+
     def getJot(self):
         self.jsesion = JotControlador.JotControlador(self.DOMAIN_C,self.KEY_C, self.SECRET_C,self.CERT)
         self.jsesion.setJot()
@@ -42,7 +44,6 @@ class WebService():
 
 
     def getUser(self, userId):
-        self.userId = userId
         userURL =  '/learn/api/public/v1/users/userName:' + userId
         getURL = 'https://' + self.DOMAIN + userURL
         credencial = {'Authorization' : 'Bearer ' + self.getToken()}
@@ -51,26 +52,96 @@ class WebService():
         
     
 
+    def getCourseInfo(self,courseId):
+        url = 'https://' + self.DOMAIN+ '/learn/api/public/v1/courses/courseId:' + courseId 
+        token = self.getToken()
+        credencial = {
+            'Authorization': 'Bearer ' + token
+        }
+        r = requests.get(url,headers=credencial)
+        if r.status_code == 200:
+            jsonInfo = json.loads(r.text)
+            courseInfo = {'course_id': courseId, 'couse_name': jsonInfo['name'], 'course_uuid':jsonInfo['uuid'],'data_source':jsonInfo['dataSourceId']}
+        else:
+            courseInfo = {'course_id': courseId + ' not found', 'couse_name': 'Invalid', 'course_uuid':'Invalid','data_source':'Invalid'}
+        return courseInfo
+
+
+
+
+
     def getUUID(self,course_id):
-        self.course_id = course_id
-        courseURL = "/learn/api/public/v1/courses/courseId:" + course_id 
+        courseURL = '/learn/api/public/v1/courses/courseId:' + course_id 
         getURL = 'https://' + self.DOMAIN + courseURL
-        credencial = {'Authorization' : 'Bearer ' + self.getToken()}
+        token = self.getToken()
+        credencial = {'Authorization' : 'Bearer ' + token}
         r = requests.get(getURL,headers=credencial)
-        parsed_json = json.loads(r.text)
-        return parsed_json['uuid']
+        if r.status_code == 200: 
+            parsed_json = json.loads(r.text)
+            return parsed_json['uuid']   
+        elif r.status_code == 404:
+            return "course not found"
+        else:
+            print("Error GetUUID", str(r))
+            return "not found"
 
-
+    
     def getGrabaciones(self,cursoUUID,tiempo):
         sesionCollab = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
         grabaciones = sesionCollab.getGrabaciones(cursoUUID,tiempo)
         return(grabaciones)
     
+
     def get_recording_data(self,recording_id):
         sessions = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
         recordingid = sessions.get_recording_data(recording_id)
-        #print(str(recordingid))
         return recordingid
+
+
+    def get_moodle_sesion_name(self,sesionId):
+        moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        nombreMoodleSesion = moodle.moodleSesionName(sesionId)
+        return nombreMoodleSesion
+
+    def get_moodle_lista_sesiones(self,criteria):
+        moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        listaCompleta = moodle.listaCompletaSessiones(criteria)
+        return listaCompleta
+
+    
+    def get_moodle_lista_grabaciones(self,sname):
+        moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        listaGrabacionesMoodle = moodle.listaMoodleGrabaciones(sname)
+        return listaGrabacionesMoodle
+
+    def get_moodle_lista_completa_grbaciones(self):
+        moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        listaCompleta = moodle.listaCompletaMoodleGrabaciones()
+        return listaCompleta
+
+    def get_moodle_grabaciones_contexto(self,contexto_id,tiempo):
+        moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        listaCompleta = moodle.getGrabacionesMoodleContextoLTI(contexto_id,tiempo)
+        return listaCompleta
+    
+    def get_moodle_grabaciones_id(self,context_id):
+        moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        listaCompleta = moodle.grabacionesMoodleLTI(context_id)
+        return listaCompleta
+
+    def get_moodle_grabacion_data(self,recording_id):
+        moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        jsonInfo = moodle.get_moodleLTI_recording_data(recording_id)
+        return jsonInfo
+
+        
+
+        
+
+
+
+
+
 
     
     

@@ -1,5 +1,5 @@
 '''
-@ Carlos Suarez
+@ Carlos Suarez 2020
 '''
 
 import requests
@@ -45,3 +45,6 @@ class SesionControlador():
             return res
         else:
             print(r)
+
+
+    
