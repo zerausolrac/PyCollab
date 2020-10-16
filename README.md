@@ -1,9 +1,16 @@
 # PyCollab
-Python Blackoboard Collaborate script to download recording based on Blackboard Learn courses linked to Blackboard Collaborate session.
+
+
+Python Blackoboard Collaborate script to download recording based on Blackboard Learn Course ID, or Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 and get:
--	Recording Report in a CSV file (Recording_ID, Storage Size, Duration, Creation Date, Duration)
--	Downloads local folder that will receive the MP4 video recording files
--	Command line attributes: 1) to load external file that list courses_id   2)  weeks int value to search for recording  behind current date.
+<ul>
+<li>Recording Report in a CSV file (Recording_ID, Storage Size, Duration, Creation Date, Duration) on /report folder
+</li>
+<li>Downloads local folder that will receive the MP4 video <i>if the recording have chats, those will be downloaded too.</i>irecording files on /download folder
+</li>
+<li>Command line attributes depending on the scenario: Learn Course,Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
+</li>
+</ul>
 
 
 
@@ -49,6 +56,8 @@ edit moodle_plugin_sessions.txt file
 ### Search recording from Blackboard Learn to Collaborate   
 
 <li>if you have the Blackboard Learn course id(s) as input data on the file learn_courses.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
+>
 <li>
 
 ```
@@ -56,6 +65,7 @@ python3 Collab.py -f learn_courses.txt -w 10
 ```
 <li>
 if you have the Blackboard Learn UUID(s) as input data on the file learn_uuids.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
 </li>
 
 ```
@@ -66,6 +76,7 @@ python3 Collab.py -e learn_uuids.txt -w 10
 ### Search recording from Moodle to Collaborate  
 
 <li>if you have the Moodle session Id created by Moodle Collaborate plugin as input data on the file moodle_plugin_sessions.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
 <li>
 
 ```
@@ -73,12 +84,22 @@ python3 CollabMoodle.py -s moodle_plugin_sessions.txt -w 10
 ```
 <li>
 if you have the Moodle courses ID(s) related to Moodle LTL Tool as input data on the file moodle_lti_id.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
 </li>
 
 ```
 python3 CollabMoodle.py -l moodle_lti_id.txt -w 10   
 ```
 
+### Report Learn-Colaborate 
+
+<li>
+If you need to know about recording storage size, duration and  recording ID before download any recording you can create a report, where -f is point to learn_courses.txt file that have Blackboard Learn courses ID listed by row:
+</li>
+
+```
+python3 CollabReport.py -f learn_courses.txt
+```
 
 
 # Video
