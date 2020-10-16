@@ -28,9 +28,12 @@ They need to go to developer.blackboard.com and register from there to grab the 
 
 Now, for Collaborate production they CAN and MUST create a ticket on behind the blackboard requesting their credentials.
 
-## 4 Modify list of courses ID
+## 4 Modify external file depending on scenario
 ```
-edit cursos.txt file
+edit learn_courses.txt file
+edit learn_uuids.txt file
+edit moodle_lti_id.txt file
+edit moodle_plugin_sessions.txt file
 ```
 
 
@@ -85,8 +88,3 @@ https://www.youtube.com/watch?v=UxKZvBw_-NU
 
 Español
 https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 79d9560c8d3cae95d4404a4fb3791a08288b58c2
