@@ -47,9 +47,9 @@ edit moodle_plugin_sessions.txt file
 ## 5. Run the script
 
 <ul>
-<li>python3 Collab.py</li>
-<li>python3 CollabMoodle.py</li>
-<li>python3 CollabReport.py</li>
+<li>Collab.py</li>
+<li>CollabMoodle.py</li>
+<li>CollabReport.py</li>
 </ul>
 
 
@@ -82,7 +82,7 @@ python3 Collab.py -e learn_uuids.txt -w 10
 python3 CollabMoodle.py -s moodle_plugin_sessions.txt -w 10   
 ```
 <li>
-if you have the Moodle courses ID(s) related to Moodle LTL Tool as input data on the file moodle_lti_id.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+if you have the Moodle courses ID(s) related to Moodle LTI Tool as input data on the file moodle_lti_id.txt, where -w is a value of weeks back for as starting point of searching for recordings:
 <B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i>
 </li>
 
