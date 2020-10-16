@@ -6,7 +6,7 @@ and get:
 <ul>
 <li>Recording Report in a CSV file (Recording_ID, Storage Size, Duration, Creation Date, Duration) on /reports folder
 </li>
-<li>Downloads local folder that will receive the MP4 video <i>if the recording have chats, those will be downloaded too.</i>irecording files on /downloads folder
+<li>Downloads local folder that will receive the MP4 video <i>if the recording have chats, those will be downloaded too.</i> Recording  and Chat csv files will be on /downloads folder
 </li>
 <li>Command line attributes depending on the scenario: Learn Course,Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 </li>
