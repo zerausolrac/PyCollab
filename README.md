@@ -56,16 +56,15 @@ edit moodle_plugin_sessions.txt file
 ### Search recording from Blackboard Learn to Collaborate   
 
 <li>if you have the Blackboard Learn course id(s) as input data on the file learn_courses.txt, where -w is a value of weeks back for as starting point of searching for recordings:
-<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
->
-<li>
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i>
+</li>
 
 ```
 python3 Collab.py -f learn_courses.txt -w 10   
 ```
 <li>
 if you have the Blackboard Learn UUID(s) as input data on the file learn_uuids.txt, where -w is a value of weeks back for as starting point of searching for recordings:
-<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i>
 </li>
 
 ```
@@ -76,15 +75,15 @@ python3 Collab.py -e learn_uuids.txt -w 10
 ### Search recording from Moodle to Collaborate  
 
 <li>if you have the Moodle session Id created by Moodle Collaborate plugin as input data on the file moodle_plugin_sessions.txt, where -w is a value of weeks back for as starting point of searching for recordings:
-<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
-<li>
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i>
+</li>
 
 ```
 python3 CollabMoodle.py -s moodle_plugin_sessions.txt -w 10   
 ```
 <li>
 if you have the Moodle courses ID(s) related to Moodle LTL Tool as input data on the file moodle_lti_id.txt, where -w is a value of weeks back for as starting point of searching for recordings:
-<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i
+<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i>
 </li>
 
 ```
