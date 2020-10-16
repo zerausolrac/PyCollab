@@ -86,8 +86,8 @@ python3 CollabMoodle.py -l moodle_lti_id.txt -w 10
 <a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new"> 
 English
 </a>
-
-
+<br>
+<br>
 <a href="https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be" target="new"> 
 Español
 </a>
