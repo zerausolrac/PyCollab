@@ -16,7 +16,7 @@ You need to have installed Python 3.7+
 pip3 install -r requerimientos.txt
 ```
 
-## 3 Add Blackbord Collaborate and Learn Credentials
+## 3 Add Blackboard Collaborate and Learn Credentials
 ```
 edit content of Config.py file
 ```
