@@ -20,7 +20,13 @@ pip3 install -r requerimientos.txt
 ```
 edit content of Config.py file
 ```
+### Note
 
+In order to get the Learn credentials, they do not to open a case on behind the blackboard nor email developers@blackboard.com.
+
+They need to go to developer.blackboard.com and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.
+
+Now, for Collaborate production they CAN and MUST create a ticket on behind the blackboard requesting their credentials.
 
 ## 4 Modify list of courses ID
 ```
@@ -30,17 +36,47 @@ edit cursos.txt file
 
 ## 5 Run the script
 
-```
-### Search for Learn recording 
-python3 Collab.py -f cursos.txt -w 12
+<ul>
+<li>python3 Collab.py</li>
+<li>python3 CollabMoodle.py</li>
+<li>python3 CollabReport.py</li>
+</ul>
 
-### External UUID of Collab Session
-python3 Collab.py -e uuid.txt -w 12
+
+### Search recording from Blackboard Learn to Collaborate   
+
+<li>if you have the Blackboard Learn course id(s) as input data on the file learn_courses.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+<li>
 
 ```
-- where -f is pointing to file named in this case: "cursos.txt" having within listed  of all Blackboard course ID by row
-- where -e pointoing to file  named in this case: "uuid.tt" having within listed of external UUID (session)
-- where -w is a value of weeks back for as starting point of searching for recordings
+python3 Collab.py -f learn_courses.txt -w 10   
+```
+<li>
+if you have the Blackboard Learn UUID(s) as input data on the file learn_uuids.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+</li>
+
+```
+python3 Collab.py -e learn_uuids.txt -w 10   
+```
+
+
+### Search recording from Moodle to Collaborate  
+
+<li>if you have the Moodle session Id created by Moodle Collaborate plugin as input data on the file moodle_plugin_sessions.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+<li>
+
+```
+python3 CollabMoodle.py -s moodle_plugin_sessions.txt -w 10   
+```
+<li>
+if you have the Moodle courses ID(s) related to Moodle LTL Tool as input data on the file moodle_lti_id.txt, where -w is a value of weeks back for as starting point of searching for recordings:
+</li>
+
+```
+python3 CollabMoodle.py -l moodle_lti_id.txt -w 10   
+```
+
+
 
 # Video
 English:
@@ -50,11 +86,3 @@ https://www.youtube.com/watch?v=UxKZvBw_-NU
 Español
 https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be
 
-## Note
-
-```
-In order to get the Learn credentials, they do not to open a case on behind the blackboard nor email developers@blackboard.com.
-
-They need to go to developer.blackboard.com and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.
-
-Now, for Collaborate production they CAN and MUST create a ticket on behind the blackboard requesting their credentials.
