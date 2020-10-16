@@ -4,9 +4,9 @@
 Python Blackoboard Collaborate script to download recording based on Blackboard Learn Course ID, or Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 and get:
 <ul>
-<li>Recording Report in a CSV file (Recording_ID, Storage Size, Duration, Creation Date, Duration) on /report folder
+<li>Recording Report in a CSV file (Recording_ID, Storage Size, Duration, Creation Date, Duration) on /reports folder
 </li>
-<li>Downloads local folder that will receive the MP4 video <i>if the recording have chats, those will be downloaded too.</i>irecording files on /download folder
+<li>Downloads local folder that will receive the MP4 video <i>if the recording have chats, those will be downloaded too.</i>irecording files on /downloads folder
 </li>
 <li>Command line attributes depending on the scenario: Learn Course,Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 </li>
@@ -15,15 +15,15 @@ and get:
 
 
 
-## 1 Instalation
+## 1. Instalation
 You need to have installed Python 3.7+ 
 
-## 2 Install requirements 
+## 2. Install requirements 
 ```
 pip3 install -r requerimientos.txt
 ```
 
-## 3 Add Blackboard Collaborate and Learn Credentials
+## 3. Add Blackboard Collaborate and Learn Credentials
 ```
 edit content of Config.py file
 ```
@@ -35,7 +35,7 @@ They need to go to developer.blackboard.com and register from there to grab the 
 
 Now, for Collaborate production they CAN and MUST create a ticket on behind the blackboard requesting their credentials.
 
-## 4 Modify external file depending on scenario
+## 4. Modify external file depending on scenario
 ```
 edit learn_courses.txt file
 edit learn_uuids.txt file
@@ -44,7 +44,7 @@ edit moodle_plugin_sessions.txt file
 ```
 
 
-## 5 Run the script
+## 5. Run the script
 
 <ul>
 <li>python3 Collab.py</li>
@@ -104,11 +104,7 @@ python3 CollabReport.py -f learn_courses.txt
 
 # Video
 
-<a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new"> 
-English
-</a>
+<a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new">English</a>
 <br>
 <br>
-<a href="https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be" target="new"> 
-Español
-</a>
+<a href="https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be" target="new"> Español</a>
