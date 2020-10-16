@@ -82,9 +82,12 @@ python3 CollabMoodle.py -l moodle_lti_id.txt -w 10
 
 
 # Video
-English:
-https://www.youtube.com/watch?v=UxKZvBw_-NU
+
+<a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new"> 
+English
+</a>
 
 
+<a href="https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be" target="new"> 
 Español
-https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be
+</a>
