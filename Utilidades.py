@@ -39,7 +39,7 @@ def descargarGrabacion(url:str, fname:str):
     resp = requests.get(url,stream=True)
     total = int(resp.headers.get('content-length',0))
     progress_bar = tqdm(total=total, unit='iB', unit_scale=True,unit_divisor=1024)
-    with open(fname,'wb',encoding='utf-8') as file:
+    with open(fname,'wb') as file:
             for data in resp.iter_content(chunk_size=1024):
                 size = file.write(data)
                 progress_bar.update(size)
@@ -96,7 +96,7 @@ def downloadChats(chat_data,name):
 def crearReporte(reporte):
    filename = './reports/recordingReport.csv'
    header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
-   file = open(filename, 'w',encoding='utf-8')
+   file = open(filename, 'w')
    writer = csv.writer(file)
    writer.writerow(header)
    for x in range(len(reporte)):
@@ -116,7 +116,7 @@ def crearReporte(reporte):
 def crearReporteCollab(reporte):
     filename = './reports/Collab_Report.csv'
     headers = [ 'Course ID', 'Course Name','Course UUID', 'Recording ID', 'Recording Name','Duration', 'Storage Size (MB)', 'Created Date']
-    file = open(filename, 'w',encoding='utf-8')
+    file = open(filename, 'w')
     writer = csv.writer(file)
     writer.writerow(headers)
     for x in range(len(reporte)):
