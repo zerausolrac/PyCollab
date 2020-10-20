@@ -7,8 +7,12 @@ import sys
 if __name__ == "__main__":
    param = ut.mainReport(sys.argv[1:])
    courses_id = ut.leerCursos(param[0])
-   if len(courses_id) != 0:
-      
+   if param[1] == 0:
+        tiempo = ut.semanasAtiempo(12)
+   else:
+       tiempo = ut.semanasAtiempo(param[1])
+   
+   if len(courses_id) != 0:   
       print("Creating Learn-Collaborate Report...")
       webService = WebService()
       course_uuid = []
@@ -17,12 +21,6 @@ if __name__ == "__main__":
       for course_id in courses_id:
          course_info.append(webService.getCourseInfo(course_id))   
          course_uuid.append(webService.getCourseInfo(course_id)['course_uuid'])     
-      tiempo = datetime.datetime.now() - datetime.timedelta(weeks=12)
-      tiempo = tiempo.strftime('%Y-%m-%dT%H:%M:%SZ')      
-      
-      print("Courses UUID")
-      print(course_uuid)
-
       course_uuid_recordings = []
       for cuuid in course_uuid:
          grabacionesJson = webService.getGrabaciones(cuuid,tiempo)
@@ -59,4 +57,4 @@ if __name__ == "__main__":
    else:
       print("list of courses is empty!")   
    print("Report created successfully: Collab_report.csv")
-   
+ 

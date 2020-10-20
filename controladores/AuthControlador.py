@@ -41,8 +41,10 @@ class AuthControlador():
                 pass
             except TypeError:
                 pass
-    
-        r = requests.post(baseURL,headers=cabecera,data=body)
+        try:
+            r = requests.post(baseURL,headers=cabecera,data=body)
+        except requests.exceptions.RequestException:
+            raise Exception('Failed to connect to %s' % baseURL) from None
         if r.status_code == 200:
             parsed_json = json.loads(r.text)
             self.cache = TTLCache(maxsize=1, ttl=parsed_json['expires_in'])

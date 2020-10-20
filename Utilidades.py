@@ -209,21 +209,22 @@ def mainMoodle(argv):
 
 def mainReport(argv):
     archivoCursos = ''
+    semanas = 0
     try:
-        opts,args = getopt.getopt(argv,"hf:", ["cfile="])
+        opts,args = getopt.getopt(argv,"hf:w:", ["cfile=","weeks="])
     except getopt.GetoptError:
-        print('CollabReport.py -f <LearnFileName_COURSE_ID.txt>')
+        print('CollabReport.py -f <LearnFileName_COURSE_ID.txt> -w <numberOfWeekBehindToSearch>')
         
         sys.exit(2)
     for opt,arg in opts:
         if opt == '-h':
-            print('CollabReport.py -f <LearnFileName_COURSE_ID.txt>')
+            print('CollabReport.py -f <LearnFileName_COURSE_ID.txt> -w <numberOfWeekBehindToSearch>')
             sys.exit()
         elif opt in ('-f', '--cfile'):
             archivoCursos = arg
-        
-
-    return [archivoCursos]
+        elif opt in ('-w', '--weeks'):
+            semanas = int(arg)
+    return [archivoCursos, semanas]
 
 
 
