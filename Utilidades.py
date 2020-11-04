@@ -18,10 +18,10 @@ def listaGrabaciones(recordings):
           if number_of_recordings <= 0:
              return None
           while x < number_of_recordings:
-            if 'storageSize' in recordings['results'][x]:
+            if 'storageSize' in recordings['results'][x] and 'created' in recordings['results'][x]['created']:
                 recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":recordings['results'][x]['storageSize'],"created": recordings['results'][x]['created']})
             else:
-                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":0,"created": recordings['results'][x]['created']})
+                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":0,"created": 'not defined'})
             x += 1
           return recordinglist
         except TypeError:
@@ -128,7 +128,10 @@ def crearReporteCollab(reporte):
         recording_name = registro[4]
         duration = calcularTiempo(int(registro[5]/1000))
         storageSize = str(round(float(registro[6])/1000000, 2))
-        created = convertirFecha(registro[7])
+        if registro[7]== 'not defined':
+            created = 'not defined'
+        else:
+            created = convertirFecha(registro[7])
         writer.writerow([course_id,couse_name,course_uuid,recording_id,recording_name,duration,storageSize,created])
     file.close()
 
