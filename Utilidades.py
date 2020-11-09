@@ -28,6 +28,18 @@ def listaGrabaciones(recordings):
          return None
 
 
+def listaGrabacion(recording_info):
+    if recording_info == None:
+        return None
+    else:
+        if 'storageSize' in recording_info and 'created' in recording_info:
+            recording_data = {"recording_id" : recording_info['id'], "recording_name" : recording_info['name'], "duration":recording_info['duration'], "storageSize":recording_info['storageSize'],"created": recording_info['created']}
+        else:
+            recording_data = {"recording_id" : recording_info['id'], "recording_name" : recording_info['name'], "duration":recording_info['duration'], "storageSize":0,"created": 'not defined'}
+        return recording_data
+
+
+
 
 def calculoPeso(url):
     resp = requests.get(url)
@@ -53,7 +65,7 @@ def crearArchivoChat(url:str,fname:str):
         #CSV
         filename =  fname + '.csv'
         header = ["Participant id", "Student Name", "Message"]
-        file = open(filename, 'w')
+        file = open(filename, 'w', encoding="utf-8")
         writer = csv.writer(file)
         writer.writerow(header)
         for jsonRow in jsonInfo:
@@ -81,10 +93,31 @@ def downloadrecording(recording_list, name, course_uuid):
         descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
         
         if len(recording_data['chats']) == 0:
-            print("No chat on the recording.")
+            print("No chat on the recording")
         else:
             print("Downloaling chat")
             downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+
+
+def downloadRecordingsUUID(recording_lista):
+    if recording_lista != None:
+        recording_data = webService.get_recording_data(recording_lista['recording_id'])
+        if recording_data != None:
+            filename = recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+            chatFileName = 'Chat-' + filename
+            fullpath = './downloads/'
+            print(fullpath + filename)
+            descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
+            if len(recording_data['chats']) == 0:
+                print("No chat on the recording")
+            else:
+                print("Downloaling chat")
+                downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+    else:
+        print("No data from Collaborate")
+
+
+
 
 
 def downloadChats(chat_data,name):
@@ -148,6 +181,15 @@ def leerCursos(filename):
 
 
 def leerUUID(filename):
+   uuids = []
+   with open(filename) as reader:
+      for linea in reader:
+         contenido = linea.rstrip()
+         uuids.append(str(contenido))
+   reader.close()
+   return uuids
+
+def leerRecUUID(filename):
    uuids = []
    with open(filename) as reader:
       for linea in reader:
