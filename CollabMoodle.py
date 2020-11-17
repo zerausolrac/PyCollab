@@ -15,7 +15,6 @@ if __name__ == "__main__":
     if  param[0] != '' and param[1] == '':
         print("Moodle Sesion Name")
         moodlSession = ut.leerUUID(param[0])
-        print(moodlSession)
         for sesion in moodlSession:
             nombre_session = webService.get_moodle_sesion_name(sesion)
             if nombre_session == None or nombre_session == ' ':

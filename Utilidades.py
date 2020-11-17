@@ -18,14 +18,25 @@ def listaGrabaciones(recordings):
           if number_of_recordings <= 0:
              return None
           while x < number_of_recordings:
-            if 'storageSize' in recordings['results'][x] and 'created' in recordings['results'][x]['created']:
+            if 'storageSize' in recordings['results'][x]:
                 recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":recordings['results'][x]['storageSize'],"created": recordings['results'][x]['created']})
             else:
-                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":0,"created": 'not defined'})
+                recording_id = recordings['results'][x]['id']
+                rec_data = webService.get_recording_data(recording_id)
+                if rec_data != None:
+                    if 'mediaDownloadUrl' in rec_data:  
+                        size = recording_storageSize(rec_data['mediaDownloadUrl'])
+                    else:
+                        size = recording_storageSize(rec_data['extStreams'][0]['streamUrl'])
+                    recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":size,"created": 'not defined'})
+                else:
+                    recordinglist.append({"recording_id" : recordings['results'][x]['id'],"recording_name" : recordings['results'][x]['name'],'msg':403})
             x += 1
           return recordinglist
         except TypeError:
-         return None
+            return None
+
+
 
 
 def listaGrabacion(recording_info):
@@ -35,16 +46,59 @@ def listaGrabacion(recording_info):
         if 'storageSize' in recording_info and 'created' in recording_info:
             recording_data = {"recording_id" : recording_info['id'], "recording_name" : recording_info['name'], "duration":recording_info['duration'], "storageSize":recording_info['storageSize'],"created": recording_info['created']}
         else:
-            recording_data = {"recording_id" : recording_info['id'], "recording_name" : recording_info['name'], "duration":recording_info['duration'], "storageSize":0,"created": 'not defined'}
+            rec_data = webService.get_recording_data(recording_info['results'][0]['id'])
+            if 'mediaDownloadUrl' in rec_data:  
+                size = recording_storageSize(rec_data['mediaDownloadUrl'])
+            else:
+                size = recording_storageSize(rec_data['extStreams'][0]['streamUrl'])
+            recording_data = {"recording_id" : recording_info['id'], "recording_name" : recording_info['name'], "duration":recording_info['duration'], "storageSize":size,"created": recording_info['created']}
         return recording_data
 
+        
+
+
+def listaGrabacionCollabData(recording_info):
+    if recording_info == None:
+        return None
+    else:
+        if 'mediaDownloadUrl' in recording_info and 'chats' in recording_info:
+            size = recording_storageSize(recording_info['mediaDownloadUrl'])
+            recording_data = {'downloadUrl':recording_info['mediaDownloadUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size, 'chat':recording_info['chats'][0]['url']}
+        else:
+            size = recording_storageSize(recording_info['extStreams'][0]['streamUrl'])
+            recording_data = {'downloadUrl':recording_info['extStreams'][0]['streamUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size,'chat':None}
+    return recording_data
 
 
 
-def calculoPeso(url):
-    resp = requests.get(url)
-    size = int(resp.headers.get('content-length',0))
-    return size 
+def recording_id(url:str):
+    splitedURL = url.split('/')
+    ultimo = splitedURL[len(splitedURL)-1]
+    return ultimo
+
+
+def readCollabReport(fileName:str):
+    recording_ids = []
+    with open(fileName, newline='', encoding='utf-8') as nline:
+        registers = csv.DictReader(nline)
+        for register in registers:
+            recording = recording_id(register['RecordingLink'])
+            sessionOwner = register['SessionOwner']
+            sessionName = register['SessionName']
+            sessionIdentifier = register['SessionIdentifier']
+            recName = register['RecordingName']
+
+            recording_ids.append({'recording':recording, 'sessionOwner':sessionOwner,'recName':recName,'sessionName':sessionName, 'sessionId':sessionIdentifier})
+    return recording_ids
+
+
+
+def recording_storageSize(url:str):
+    r = requests.get(url, stream=True,headers={'Accept-Encoding': None})
+    size = int(r.headers.get('content-length',0))
+    return size
+
+
 
 
 def descargarGrabacion(url:str, fname:str):
@@ -56,6 +110,7 @@ def descargarGrabacion(url:str, fname:str):
                 size = file.write(data)
                 progress_bar.update(size)
     progress_bar.close()
+
 
 
 def crearArchivoChat(url:str,fname:str):
@@ -86,35 +141,59 @@ def crearArchivoChat(url:str,fname:str):
 def downloadrecording(recording_list, name, course_uuid):
       for recording in recording_list:
         recording_data = webService.get_recording_data(recording['recording_id'])
-        filename = name + ' - ' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
-        chatFileName = 'Chat-' + filename
-        fullpath = './downloads/'
-        print(fullpath + filename)
-        descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
-        
-        if len(recording_data['chats']) == 0:
-            print("No chat on the recording")
-        else:
-            print("Downloaling chat")
-            downloadChats(recording_data['chats'][0],fullpath + chatFileName)
-
-
-def downloadRecordingsUUID(recording_lista):
-    if recording_lista != None:
-        recording_data = webService.get_recording_data(recording_lista['recording_id'])
         if recording_data != None:
-            filename = recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+            filename = name + ' - ' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
             chatFileName = 'Chat-' + filename
             fullpath = './downloads/'
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
+            
             if len(recording_data['chats']) == 0:
                 print("No chat on the recording")
             else:
                 print("Downloaling chat")
                 downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+        
+            
+
+
+def downloadOneRecording(recording, course_uuid):
+    if recording != 403:
+        recording_data = webService.get_recording_data(recording['recording_id'])
+        if recording_data != None:
+            filename = recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+            chatFileName = 'Chat-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '')
+            fullpath = './downloads/'
+            print(fullpath + filename)
+            descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
+            
+            if len(recording_data['chats']) == 0:
+                print("No chat on the recording")
+            else:
+                print("Downloaling chat")
+                downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+            return True
+        else:
+            return None
+     
+
+
+
+
+def downloadRecordingsUUID(recording_lista):
+    if recording_lista != None:
+        filename = recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+        chatFileName = 'Chat-' + filename
+        fullpath = './downloads/'
+        print(fullpath + filename)
+        descargarGrabacion(recording_lista['downloadUrl'],fullpath + filename)
+        if recording_lista['chat'] == None:
+            print("No chat on the recording")
+        else:
+            print("Downloaling chat")
+            downloadChats(recording_lista['chat'],fullpath + chatFileName)
     else:
-        print("No data from Collaborate")
+        print("No data from Recording ID on Collaborate")
 
 
 
@@ -127,7 +206,7 @@ def downloadChats(chat_data,name):
 
 
 def crearReporte(reporte):
-   filename = './reports/recordingReport.csv'
+   filename = './reports/Collab_Download_RecordingReport.csv'
    header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
    file = open(filename, 'w')
    writer = csv.writer(file)
@@ -141,13 +220,28 @@ def crearReporte(reporte):
       created = convertirFecha(registro[4])
       writer.writerow([recording_id,recording_name,duration,storage,created])
    file.close()
-   return "Report: recordingReport.csv created!"
+   return "Report: Collab_Download_RecordingReport.csv created!"
 
+
+def crearReporte_403(reporte):
+   filename = './reports/Collab_Download_RecordingReport_403.csv'
+   header = ["Recording ID", "Recording Name", "Detail"]
+   file = open(filename, 'w')
+   writer = csv.writer(file)
+   writer.writerow(header)
+   for x in range(len(reporte)):
+      registro = reporte[x]
+      recording_id = registro[0]
+      recording_name = registro[1]
+      detail = registro[2]
+      writer.writerow([recording_id,recording_name,detail])
+   file.close()
+   return "Report: recordingReport_403.csv created!"
    
 
 
 def crearReporteCollab(reporte):
-    filename = './reports/Collab_Report.csv'
+    filename = './reports/Collab_Report_from_Course.csv'
     headers = [ 'Course ID', 'Course Name','Course UUID', 'Recording ID', 'Recording Name','Duration', 'Storage Size (MB)', 'Created Date']
     file = open(filename, 'w')
     writer = csv.writer(file)
@@ -167,6 +261,72 @@ def crearReporteCollab(reporte):
             created = convertirFecha(registro[7])
         writer.writerow([course_id,couse_name,course_uuid,recording_id,recording_name,duration,storageSize,created])
     file.close()
+    return "Report: Collab_Report_from_Course.csv created!"
+
+
+
+def crearReporteCollabRecordings(reporte):
+    filename = './reports/Collab_Report_Recordings.csv'
+    headers = ['sessionOwner','Recording ID', 'Recording Name','Duration', 'Storage Size (MB)', 'Created Date']
+    file = open(filename, 'w')
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for x in range(len(reporte)):
+        registro = reporte[x]
+        session_ownner = registro[0]
+        recording_id = registro[1]
+        recording_name = registro[2]
+        duration = calcularTiempo(int(registro[3]/1000))
+        storageSize = str(round(float(registro[4])/1000000, 2))
+        created = convertirFecha(registro[5])
+        writer.writerow([session_ownner,recording_id,recording_name,duration,storageSize,created])
+    file.close()
+
+
+
+
+
+
+
+
+def crearReporteCollab_403(reporte):
+    filename = './reports/Collab_Report_from_Course_403.csv'
+    headers = [ 'Course ID', 'Course Name','Course UUID', 'Recording ID', 'Recording Name','Detail']
+    file = open(filename, 'w')
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for x in range(len(reporte)):
+        registro = reporte[x]
+        course_id = registro[0]
+        couse_name = registro[1]
+        course_uuid = registro[2]
+        recording_id = registro[3]
+        recording_name = registro[4]
+        detail = registro[5]
+        writer.writerow([course_id,couse_name,course_uuid,recording_id,recording_name,detail])
+    file.close()
+    return "Report: Collab_Report_from_Course_403.csv created!"
+
+
+
+def crearReporte_Recordings_403(reporte):
+    filename = './reports/Collab_Report_Recordings_403.csv'
+    headers = [ 'OwnerSession', 'Session Name','Session ID', 'Recording ID', 'Recording Name','Detail']
+    file = open(filename, 'w')
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for x in range(len(reporte)):
+        registro = reporte[x]
+        course_id = registro[0]
+        couse_name = registro[1]
+        course_uuid = registro[2]
+        recording_id = registro[3]
+        recording_name = registro[4]
+        detail = registro[5]
+        writer.writerow([course_id,couse_name,course_uuid,recording_id,recording_name,detail])
+    file.close()
+
+
 
 
 
@@ -274,6 +434,39 @@ def mainReport(argv):
 
 
 
+def mainRecordings(argv):
+    recordingsFile = ''
+    try:
+        opts,args = getopt.getopt(argv,"hf:", ["recordings="])
+    except getopt.GetoptError:
+        print("The correct params are:")
+        print('CollabRecordings.py -t <RecordingsReport.csv>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print('CollabRecordings.py -t <RecordingsReport.csv>')
+            sys.exit()
+        elif opt in ('-f', '--recordings'):
+            recordingsFile = arg
+    return [recordingsFile]
+
+
+def mainMinutes(argv):
+    attendanceFile = ''
+    try:
+        opts,args = getopt.getopt(argv,"hf:", ["attendance="])
+    except getopt.GetoptError:
+        print("The correct params are:")
+        print('CollabMinutes.py -t <AttendaceReport.csv>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print('CollabMinutes.py -t <AttendaceReport.csv>')
+            sys.exit()
+        elif opt in ('-f', '--attendance'):
+            attendanceFile = arg
+    return [attendanceFile]
+
 
 
 
@@ -294,3 +487,25 @@ def semanasAtiempo(weeks):
     tiempo = datetime.datetime.now() - datetime.timedelta(weeks=int(weeks))
     tiempo = tiempo.strftime('%Y-%m-%dT%H:%M:%SZ')
     return tiempo
+
+
+def collabTimeToMinutes(stime:str):
+    #ctime = datetime.datetime.strptime(stime,'%H:%M:%S').time()
+    ctime = stime.split(':')
+    hours = float(ctime[0])*60
+    minutes = float(ctime[1])
+    seconds = float(ctime[2])/60
+    #return (ctime.hour*60 + ctime.minute + ctime.second/60)
+    return round(hours + minutes + seconds)
+    
+
+def collabMinutes(fileName:str):
+    minutes = 0
+    with open(fileName, newline='', encoding='utf-8') as nline:
+        registers = csv.DictReader(nline)
+        for register in registers:
+            minutes += collabTimeToMinutes(register['AttendeeTotalTimeInSession'])
+    nline.close()
+    fminutes = round(minutes)
+
+    return '{:,}'.format(fminutes)

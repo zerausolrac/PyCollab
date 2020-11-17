@@ -31,6 +31,61 @@ class SesionControlador():
         else:
             print(r)
     
+
+
+
+    def getGrabacionUUID(self,recording_id):
+        endpoint = 'https://' + self.url + '/recordings/' + recording_id
+        bearer = "Bearer " + self.token
+        rheaders = {
+            "Authorization":bearer,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+        r = requests.get(endpoint,headers=rheaders,verify=self.cert)
+        if r.status_code == 200:
+            res = json.loads(r.text)
+            return res
+        else:
+            print("Error:", str(r))
+            return None
+
+
+    def get_grabacion_UUID_data(self,recording_id):
+        authStr = 'Bearer ' + self.token
+        url = 'https://' + self.url + '/recordings/' + recording_id + '/data'
+        r = requests.get(url,
+                         headers={'Authorization': authStr, 'Content-Type': 'application/json',
+                                  'Accept': 'application/json'}, verify=self.cert)
+        if r.status_code == 200:
+            res = json.loads(r.text)
+            return res
+        if r.status_code == 403:
+            #print("You don't have permission to access this recording:", recording_id)
+            return None
+        else:
+            print("Error", str(r))
+            return None
+
+
+
+    def get_grabacion_UUID_data_secure(self,recording_id):
+        authStr = 'Bearer ' + self.token
+        url = 'https://' + self.url + '/recordings/' + recording_id + '/data/secure'
+        r = requests.get(url,
+                         headers={'Authorization': authStr, 'Content-Type': 'application/json',
+                                  'Accept': 'application/json'}, verify=self.cert)
+        if r.status_code == 200:
+            res = json.loads(r.text)
+            return res
+        if r.status_code == 403:
+            return None
+        else:
+            print("Error", str(r))
+            return None
+
+
+
     def get_recording_data(self,recording_id):
 
                 # "Authorization: Bearer $token"
@@ -43,8 +98,11 @@ class SesionControlador():
         if r.status_code == 200:
             res = json.loads(r.text)
             return res
+        elif r.status_code == 403:
+            return None
         else:
-            print(r)
+            print("Error:", str(r))
+            return None 
 
 
     
