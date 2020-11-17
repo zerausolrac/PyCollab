@@ -20,7 +20,6 @@ You need to have installed Python 3.7+
 
 Will depent on Computer operation system how Python is referenced on command line tool:
 <br> 
-<br> 
 - Mac OS: normally python3 is the alias to run python scripts when install python 3.7+
 - Windows OS: normally python is the alias to run python scripts when install python 3.7+
 <br>
@@ -63,7 +62,7 @@ edit learn_uuids.txt file
 edit moodle_lti_id.txt file
 edit moodle_plugin_sessions.txt file
 
-<b>for Scenario 3</b>
+for Scenario 3
 downlaod the Collaborate Admin Institutional Attendance Report and put on the root directoriy
 downlaod Collaborate Admin Institutional Recordings Report and put on the root directoriy
 ```
