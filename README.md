@@ -20,9 +20,10 @@ You need to have installed Python 3.7+
 
 Will depent on Computer operation system how Python is referenced on command line tool:
 <br> 
-Mac OS: normally python3 is the alias to run python scripts when install python 3.7+
+<br> 
+- Mac OS: normally python3 is the alias to run python scripts when install python 3.7+
 <br>
-Windows OS: normally python is the alias to run python scripts when install python 3.7+
+- Windows OS: normally python is the alias to run python scripts when install python 3.7+
 <br>
 
 
@@ -39,10 +40,9 @@ pip3 install -r requerimientos.txt
 </ul>
 
 <br>
-<br>
 if you have the scenario 1 you need to insert both Learn and Collaborate credentials 
 <br>
-If you hhave the scenario 2 or scenario 3, yo only need to insert Collaborate credentials but DO NOT REMOVE  the values of Learn credentils from the Config.py file
+If you have the scenario 2 or scenario 3, yo only need to insert Collaborate credentials but DO NOT REMOVE the key:value association of Learn credentils section from the Config.py file, you can leave blank
 
 ```
 edit content of Config.py file
@@ -51,9 +51,8 @@ edit content of Config.py file
 
 ### Note
 
-In order to get the Learn credentials, they do not to open a case on behind the blackboard nor email developers@blackboard.com.
+In order to get the Learn credentials, go to developer.blackboard.com and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.Then on your Blackboard Learn environment, as admin role user, go to Rest API Integration a create an integration using data provided from developer.blackboard.com before.
 
-They need to go to developer.blackboard.com and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.
 
 Now, for Collaborate production they CAN and MUST create a ticket on behind the blackboard requesting their credentials.
 
@@ -72,8 +71,11 @@ edit moodle_plugin_sessions.txt file
 <li>Collab.py -h</li>
 <li>CollabMoodle.py -h</li>
 <li>CollabReport.py -h</li>
+<li>CollabMinutes.py -h</li>
+<li>CollabRecordings.py -h</li>
+<li>CollabRecordingsDownload.py -h</li>
 </ul>
-
+<br>
 ## Scenario 1
 ### Search recording from Blackboard Learn to Collaborate  
 
