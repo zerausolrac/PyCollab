@@ -22,7 +22,6 @@ Will depent on Computer operation system how Python is referenced on command lin
 <br> 
 <br> 
 - Mac OS: normally python3 is the alias to run python scripts when install python 3.7+
-<br>
 - Windows OS: normally python is the alias to run python scripts when install python 3.7+
 <br>
 
@@ -34,15 +33,16 @@ pip3 install -r requerimientos.txt
 
 ## 3. Add Blackboard Collaborate and Learn Credentials
 <ul>
-<li>scenario 1:  Learn to Collaborate search for recordings</li>
-<li>scenario 2: Moodle to Collaborate search for recordings</li>
-<li>scenario 3: Collab Admin Institutional Reports</li>
+<li>Scenario 1:  Learn to Collaborate search for recordings</li>
+<li>Scenario 2: Moodle to Collaborate search for recordings</li>
+<li>Scenario 3: Collab Admin Institutional Reports</li>
 </ul>
 
 <br>
 if you have the scenario 1 you need to insert both Learn and Collaborate credentials 
 <br>
-If you have the scenario 2 or scenario 3, yo only need to insert Collaborate credentials but DO NOT REMOVE the key:value association of Learn credentils section from the Config.py file, you can leave blank
+If you have the scenario 2 or scenario 3, yo only need to insert Collaborate credentials, but DO NOT REMOVE the key:value association of Learn credentials section from the Config.py file.
+<br>
 
 ```
 edit content of Config.py file
@@ -62,6 +62,10 @@ edit learn_courses.txt file
 edit learn_uuids.txt file
 edit moodle_lti_id.txt file
 edit moodle_plugin_sessions.txt file
+
+<b>for Scenario 3</b>
+downlaod the Collaborate Admin Institutional Attendance Report and put on the root directoriy
+downlaod Collaborate Admin Institutional Recordings Report and put on the root directoriy
 ```
 
 
@@ -132,6 +136,7 @@ python3 CollabMoodle.py -l moodle_lti_id.txt -w 10
 <li>
 if you need to identify the amount of minutes spend in Collaborate session,first  you need to download the Collaborate Admin Institutional Attendance Report according to your zone (ca:Canada, us: USA), then use the script CollabMinutes.py with the parameter -f that point to the file previously downloaded.
 </li>
+
 ```
 python3 CollabMinutes.py -f AttendeeReport.csv   
 ```
@@ -143,6 +148,7 @@ python3 CollabMinutes.py -f AttendeeReport.csv
 <li>
 if you need to get information about recordingId, storage size, first you need to download the Collaborate Admin Institutional Recording Report according to your zone (ca:Canada, us: USA), then use the script CollabRecordings.py with the parameter -f that point to the file previously downloaded. 
 </li>
+
 ```
 python3 CollabRecordings.py -f RecordingsReport.csv   
 ```
@@ -153,6 +159,7 @@ python3 CollabRecordings.py -f RecordingsReport.csv
 <li>
 if you need to download recordings, first you need to download the Collaborate Admin Institutional Recording Report according to your zone (ca:Canada, us: USA), then use the script CollabRecordingsDownload.py with the parameter -f that point to the file previously downloaded. 
 </li>
+
 ```
 python3 CollabRecordingsDownload.py -f RecordingsReport.csv   
 ```
