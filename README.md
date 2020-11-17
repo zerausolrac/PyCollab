@@ -101,7 +101,9 @@ python3 Collab.py -e learn_uuids.txt -w 10
 
 <b>Report Learn-Colaborate</b>
 <li>
-If you need to know about recording storage size, duration and  recording ID before download any recording you can create a report, where -f is point to learn_courses.txt file that have Blackboard Learn courses ID listed by row:
+If you need to know about recording storage size, duration and  recording ID before download any recording you can create a report, where -f is point to learn_courses.txt file that have Blackboard Learn courses ID listed by row.
+<b>Note:</b>If the recording has public_access disabled, the recording won't be readed by script and will 403 report will be generated with list recording_id.
+
 </li>
 
 ```
@@ -147,6 +149,7 @@ python3 CollabMinutes.py -f AttendeeReport.csv
 <b>Report RecordingId from Collaborate RecordingsReport</b>
 <li>
 if you need to get information about recordingId, storage size, first you need to download the Collaborate Admin Institutional Recording Report according to your zone (ca:Canada, us: USA), then use the script CollabRecordings.py with the parameter -f that point to the file previously downloaded. 
+<b>Note:</b>If the recording has public_access disabled, the recording won't be readed by script and will 403 report will be generated with list recording_id.
 </li>
 
 ```
@@ -158,6 +161,7 @@ python3 CollabRecordings.py -f RecordingsReport.csv
 <b>Download RecordingId from Collaborate RecordingsReport</b>
 <li>
 if you need to download recordings, first you need to download the Collaborate Admin Institutional Recording Report according to your zone (ca:Canada, us: USA), then use the script CollabRecordingsDownload.py with the parameter -f that point to the file previously downloaded. 
+<b>Note:</b>If the recording has public_access disabled, the recording won't be readed by script and will 403 report will be generated with list recording_id.
 </li>
 
 ```
