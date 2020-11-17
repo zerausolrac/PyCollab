@@ -80,6 +80,7 @@ downlaod Collaborate Admin Institutional Recordings Report and put on the root d
 <li>CollabRecordingsDownload.py -h</li>
 </ul>
 <br>
+
 ## Scenario 1
 ### Search recording from Blackboard Learn to Collaborate  
 
