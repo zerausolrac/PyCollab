@@ -39,6 +39,7 @@ class WebService():
     def getJot(self):
         self.jsesion = JotControlador.JotControlador(self.DOMAIN_C,self.KEY_C, self.SECRET_C,self.CERT)
         self.jsesion.setJot()
+        #print(self.jsesion.getJot())
         return self.jsesion.getJot() 
 
 
@@ -80,7 +81,7 @@ class WebService():
             parsed_json = json.loads(r.text)
             return parsed_json['uuid']   
         elif r.status_code == 404:
-            return "course not found"
+            return course_id + " course not found"
         else:
             print("Error GetUUID", str(r))
             return "not found"
@@ -96,6 +97,18 @@ class WebService():
         sessions = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
         recordingid = sessions.get_recording_data(recording_id)
         return recordingid
+
+
+    def get_grabaciones_uuid(self,recording_id):
+        sessionCollab = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        grabacion = sessionCollab.getGrabacionUUID(recording_id)
+        return(grabacion)
+
+    def get_grabacion_uuid_data(self,recording_id):
+        sessions = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        recordingid = sessions.get_grabacion_UUID_data(recording_id)
+        return recordingid
+
 
 
     def get_moodle_sesion_name(self,sesionId):
