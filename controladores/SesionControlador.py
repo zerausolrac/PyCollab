@@ -100,8 +100,10 @@ class SesionControlador():
             return res
         elif r.status_code == 403:
             return None
+        elif r.status_code == 404:
+            return None
         else:
-            print("Error:", str(r))
+            print("Error: " + str(r) + "in recordingId: " + recording_id)
             return None 
 
 
