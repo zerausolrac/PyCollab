@@ -20,7 +20,6 @@ if __name__ == "__main__":
       reporte = []
       reporte_403 = []
       course_uuid_recordings = []
-
       for course_id in courses_id:
          course_info.append(webService.getCourseInfo(course_id))   
          course_uuid.append(webService.getCourseInfo(course_id)['course_uuid'])     
@@ -32,9 +31,9 @@ if __name__ == "__main__":
          if grabaciones is None:
             print("There's no recording for UUID: " + cuuid)
             reporte_403.append([
-                        cuuid['course_id'],
-                        cuuid['couse_name'],
-                        cuuid['course_uuid'],
+                        cuuid,
+                        '-',
+                        '-',
                         '-',
                         '-',
                         'There is no recording for this course'

@@ -18,19 +18,18 @@ def listaGrabaciones(recordings):
           if number_of_recordings <= 0:
              return None
           while x < number_of_recordings:
-            if 'storageSize' in recordings['results'][x]:
-                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":recordings['results'][x]['storageSize'],"created": recordings['results'][x]['created']})
-            else:
-                recording_id = recordings['results'][x]['id']
-                rec_data = webService.get_recording_data(recording_id)
-                if rec_data != None:
-                    if 'mediaDownloadUrl' in rec_data:  
-                        size = recording_storageSize(rec_data['mediaDownloadUrl'])
-                    else:
-                        size = recording_storageSize(rec_data['extStreams'][0]['streamUrl'])
-                    recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":size,"created": 'not defined'})
+            recording_id = recordings['results'][x]['id']
+            rec_data = webService.get_recording_data(recording_id)
+            if rec_data != None:
+                if 'mediaDownloadUrl' in rec_data:  
+                    size = recording_storageSize(rec_data['mediaDownloadUrl'])
+                elif 'storageSize' in recordings['results'][x]:
+                    size = recordings['results'][x]['storageSize']
                 else:
-                    recordinglist.append({"recording_id" : recordings['results'][x]['id'],"recording_name" : recordings['results'][x]['name'],'msg':403})
+                    size = recording_storageSize(rec_data['extStreams'][0]['streamUrl'])
+                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":size,"created": recordings['results'][x]['created']})
+            else:
+                recordinglist.append({"recording_id" : recordings['results'][x]['id'],"recording_name" : recordings['results'][x]['name'],'msg':403})
             x += 1
           return recordinglist
         except TypeError:
@@ -166,7 +165,6 @@ def downloadOneRecording(recording, course_uuid):
             fullpath = './downloads/'
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
-            
             if len(recording_data['chats']) == 0:
                 print("No chat on the recording")
             else:
