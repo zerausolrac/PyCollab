@@ -31,10 +31,15 @@ if __name__ == "__main__":
                 report_record = [recording['sessionOwner'],recording['recording'],recording_lista['recording_name'],recording_lista['duration'],recording_lista['size'],recording_lista['created']]
                 report.append(report_record)
                 ut.downloadRecordingsUUID(recording_lista)
-    print('Report: Collab_Recordings_from_report.csv created!')
-    ut.crearReporteCollabRecordings(report)
-    ut.crearReporte_Recordings_403(reporte_403)
-    print(datetime.datetime.utcnow())
+    if len(report) > 0: 
+            print(ut.crearReporte(report))
+    else:
+        print('No downloading was executed')
+
+    if len(reporte_403) > 0:
+        print(ut.crearReporte_403(reporte_403))
+    else:
+        print('No private recording was found')
      
 
 
