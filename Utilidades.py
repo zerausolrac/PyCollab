@@ -83,17 +83,22 @@ def recording_id(url:str):
 
 def readCollabReport(fileName:str):
     recording_ids = []
-    with open(fileName, newline='', encoding='utf-8') as nline:
-        registers = csv.DictReader(nline)
-        for register in registers:
-            recording = recording_id(register['RecordingLink'])
-            sessionOwner = register['SessionOwner']
-            sessionName = register['SessionName']
-            sessionIdentifier = register['SessionIdentifier']
-            recName = register['RecordingName']
-
-            recording_ids.append({'recording':recording, 'sessionOwner':sessionOwner,'recName':recName,'sessionName':sessionName, 'sessionId':sessionIdentifier})
-    return recording_ids
+    with open(fileName) as f:
+        columnas = f.readline()
+    if 'RecordingLink' in columnas:
+        with open(fileName, newline='', encoding='utf-8') as nline:
+            registers = csv.DictReader(nline)
+            for register in registers:
+                recording = recording_id(register['RecordingLink'])
+                sessionOwner = register['SessionOwner']
+                sessionName = register['SessionName']
+                sessionIdentifier = register['SessionIdentifier']
+                recName = register['RecordingName']
+                recording_ids.append({'recording':recording, 'sessionOwner':sessionOwner,'recName':recName,'sessionName':sessionName, 'sessionId':sessionIdentifier})
+            return recording_ids
+        nline.close()
+    else:
+        return None
 
 
 

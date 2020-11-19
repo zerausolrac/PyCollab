@@ -13,33 +13,36 @@ if __name__ == "__main__":
     report = []
     reporte_403 = []
     recordings_ids = ut.readCollabReport(param[0])
-    print("Reading recordigns_id from file Admin Collab Report- recordings")
-    for recording in recordings_ids:
-        grabacion = webService.get_grabacion_uuid_data(recording['recording'])
-        if grabacion == None:
-            reporte_403.append([
-                        recording['sessionOwner'],
-                        recording['sessionName'],
-                        recording['sessionId'],
-                        recording['recording'],
-                        recording['recName'],
-                        '403: Not allowed, private recording'
-                     ])        
+    if recordings_ids != None:
+        print("Reading recordigns_id from file Admin Collab Report- recordings")
+        for recording in recordings_ids:
+            grabacion = webService.get_grabacion_uuid_data(recording['recording'])
+            if grabacion == None:
+                reporte_403.append([
+                            recording['sessionOwner'],
+                            recording['sessionName'],
+                            recording['sessionId'],
+                            recording['recording'],
+                            recording['recName'],
+                            '403: Not allowed, private recording'
+                        ])        
+            else:
+                recording_lista = ut.listaGrabacionCollabData(grabacion)
+                if recording_lista != None:
+                    report_record = [recording['sessionOwner'],recording['recording'],recording_lista['recording_name'],recording_lista['duration'],recording_lista['size'],recording_lista['created']]
+                    report.append(report_record)
+                    ut.downloadRecordingsUUID(recording_lista)
+        if len(report) > 0: 
+                print(ut.crearReporte(report))
         else:
-            recording_lista = ut.listaGrabacionCollabData(grabacion)
-            if recording_lista != None:
-                report_record = [recording['sessionOwner'],recording['recording'],recording_lista['recording_name'],recording_lista['duration'],recording_lista['size'],recording_lista['created']]
-                report.append(report_record)
-                ut.downloadRecordingsUUID(recording_lista)
-    if len(report) > 0: 
-            print(ut.crearReporte(report))
-    else:
-        print('No downloading was executed')
+            print('No downloading was executed')
 
-    if len(reporte_403) > 0:
-        print(ut.crearReporte_403(reporte_403))
+        if len(reporte_403) > 0:
+            print(ut.crearReporte_403(reporte_403))
+        else:
+            print('No private recording was found')
     else:
-        print('No private recording was found')
+        print("The file is not Recordings Report format")
      
 
 
