@@ -508,11 +508,16 @@ def collabTimeToMinutes(stime:str):
 
 def collabMinutes(fileName:str):
     minutes = 0
-    with open(fileName, newline='', encoding='utf-8') as nline:
-        registers = csv.DictReader(nline)
-        for register in registers:
-            minutes += collabTimeToMinutes(register['AttendeeTotalTimeInSession'])
-    nline.close()
-    fminutes = round(minutes)
-
-    return '{:,}'.format(fminutes)
+    with open(fileName) as f:
+        columnas = f.readline()
+    if 'AttendeeTotalTimeInSession' in columnas:
+        with open(fileName, newline='', encoding='utf-8') as nline:
+            registers = csv.DictReader(nline)
+            for register in registers:
+                minutes += collabTimeToMinutes(register['AttendeeTotalTimeInSession'])
+            fminutes = round(minutes)
+            return '{:,}'.format(fminutes)
+        nline.close()
+    else:
+        return None
+    f.close 
