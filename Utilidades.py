@@ -62,7 +62,12 @@ def listaGrabacionCollabData(recording_info):
     else:
         if 'mediaDownloadUrl' in recording_info and 'chats' in recording_info:
             size = recording_storageSize(recording_info['mediaDownloadUrl'])
-            recording_data = {'downloadUrl':recording_info['mediaDownloadUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size, 'chat':recording_info['chats'][0]['url']}
+            chats = recording_info['chats']
+            if len(chats) > 0:
+                chat = recording_info['chats'][0]['url']
+            else:
+                chat = None
+            recording_data = {'downloadUrl':recording_info['mediaDownloadUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size, 'chat':chat}
         else:
             size = recording_storageSize(recording_info['extStreams'][0]['streamUrl'])
             recording_data = {'downloadUrl':recording_info['extStreams'][0]['streamUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size,'chat':None}
@@ -189,7 +194,7 @@ def downloadRecordingsUUID(recording_lista):
             print("No chat on the recording")
         else:
             print("Downloaling chat")
-            downloadChats(recording_lista['chat'],fullpath + chatFileName)
+            downloadChatsFromURL(recording_lista['chat'],fullpath + chatFileName)
     else:
         print("No data from Recording ID on Collaborate")
 
@@ -201,22 +206,26 @@ def downloadChats(chat_data,name):
     chat_url = chat_data['url']
     crearArchivoChat(chat_url,name)
 
+def downloadChatsFromURL(chat_url,name):
+    crearArchivoChat(chat_url,name)
+
 
 
 def crearReporte(reporte):
    filename = './reports/Collab_Download_RecordingReport.csv'
-   header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
+   header = ["sessionOwner","Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
    file = open(filename, 'w')
    writer = csv.writer(file)
    writer.writerow(header)
    for x in range(len(reporte)):
       registro = reporte[x]
-      recording_id = registro[0]
-      recording_name = registro[1]
-      duration = calcularTiempo(int(registro[2]/1000))
-      storage = str(round(float(registro[3])/1000000, 2))
-      created = convertirFecha(registro[4])
-      writer.writerow([recording_id,recording_name,duration,storage,created])
+      sessionOwner = registro[0]
+      recording_id = registro[1]
+      recording_name = registro[2]
+      duration = calcularTiempo(int(registro[3]/1000))
+      storage = str(round(float(registro[4])/1000000, 2))
+      created = convertirFecha(registro[5])
+      writer.writerow([sessionOwner,recording_id,recording_name,duration,storage,created])
    file.close()
    return "Report: Collab_Download_RecordingReport.csv created!"
 
