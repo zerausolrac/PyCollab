@@ -32,7 +32,7 @@ if __name__ == "__main__":
                     else:
                         report_403.append([grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])          
         if len(report) > 0: 
-            print(ut.crearReporte(report))
+            print(ut.crearReporteCollabDownload(report))
         else:
             print('No downloading was executed')
         if len(report_403) > 0:
@@ -43,7 +43,6 @@ if __name__ == "__main__":
     elif param[0] == '' and param[1] != '':
         print("UUID Recordings:")
         course_uuids = ut.leerUUID(param[1])
-        print(course_uuids)
         for cuuid in course_uuids:
             grabacionesJson = webService.getGrabaciones(cuuid,tiempo)
             grabaciones = ut.listaGrabaciones(grabacionesJson)
@@ -57,10 +56,9 @@ if __name__ == "__main__":
                     else:
                         report_403.append([grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])       
         if len(report) > 0: 
-            print(ut.crearReporte(report))
+            print(ut.crearReporteCollabDownload(report))
         else:
             print('No downloading was executed')
-
         if len(report_403) > 0:
             print(ut.crearReporte_403(report_403))
         else:
