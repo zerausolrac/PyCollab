@@ -513,7 +513,7 @@ def collabTimeToMinutes(stime:str):
 
 def collabMinutes(fileName:str):
     minutes = 0
-    with open(fileName) as f:
+    with open(fileName, encoding='utf-8') as f:
         columnas = f.readline()
     if 'AttendeeTotalTimeInSession' in columnas:
         with open(fileName, newline='', encoding='utf-8') as nline:
