@@ -219,7 +219,7 @@ def downloadChatsFromURL(chat_url,name):
 def crearReporte(reporte):
    filename = './reports/Collab_Download_RecordingReport.csv'
    header = ["sessionOwner","Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
-   file = open(filename, 'w')
+   file = open(filename, 'w',newline='', encoding='utf-8')
    writer = csv.writer(file)
    writer.writerow(header)
    for x in range(len(reporte)):
@@ -238,7 +238,7 @@ def crearReporte(reporte):
 def crearReporte_403(reporte):
    filename = './reports/Collab_Download_RecordingReport_403.csv'
    header = ["Recording ID", "Recording Name", "Detail"]
-   file = open(filename, 'w')
+   file = open(filename, 'w',newline='', encoding='utf-8')
    writer = csv.writer(file)
    writer.writerow(header)
    for x in range(len(reporte)):
@@ -280,7 +280,7 @@ def crearReporteCollab(reporte):
 def crearReporteCollabRecordings(reporte):
     filename = './reports/Collab_Report_Recordings.csv'
     headers = ['sessionOwner','Recording ID', 'Recording Name','Duration', 'Storage Size (MB)', 'Created Date']
-    file = open(filename, 'w')
+    file = open(filename, 'w',newline='', encoding='utf-8')
     writer = csv.writer(file)
     writer.writerow(headers)
     for x in range(len(reporte)):
@@ -304,7 +304,7 @@ def crearReporteCollabRecordings(reporte):
 def crearReporteCollab_403(reporte):
     filename = './reports/Collab_Report_from_Course_403.csv'
     headers = [ 'Course ID', 'Course Name','Course UUID', 'Recording ID', 'Recording Name','Detail']
-    file = open(filename, 'w')
+    file = open(filename, 'w',newline='', encoding='utf-8')
     writer = csv.writer(file)
     writer.writerow(headers)
     for x in range(len(reporte)):
@@ -324,7 +324,7 @@ def crearReporteCollab_403(reporte):
 def crearReporte_Recordings_403(reporte):
     filename = './reports/Collab_Report_Recordings_403.csv'
     headers = [ 'OwnerSession', 'Session Name','Session ID', 'Recording ID', 'Recording Name','Detail']
-    file = open(filename, 'w')
+    file = open(filename, 'w',newline='', encoding='utf-8')
     writer = csv.writer(file)
     writer.writerow(headers)
     for x in range(len(reporte)):
