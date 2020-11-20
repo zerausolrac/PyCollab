@@ -61,7 +61,6 @@ class SesionControlador():
             res = json.loads(r.text)
             return res
         if r.status_code == 403:
-            #print("You don't have permission to access this recording:", recording_id)
             return None
         else:
             print("Error", str(r))

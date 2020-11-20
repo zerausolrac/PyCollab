@@ -60,7 +60,7 @@ def listaGrabacionCollabData(recording_info):
     if recording_info == None:
         return None
     else:
-        if 'mediaDownloadUrl' in recording_info and 'chats' in recording_info:
+        if 'mediaDownloadUrl' in recording_info:
             size = recording_storageSize(recording_info['mediaDownloadUrl'])
             chats = recording_info['chats']
             if len(chats) > 0:
@@ -70,7 +70,12 @@ def listaGrabacionCollabData(recording_info):
             recording_data = {'downloadUrl':recording_info['mediaDownloadUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size, 'chat':chat}
         else:
             size = recording_storageSize(recording_info['extStreams'][0]['streamUrl'])
-            recording_data = {'downloadUrl':recording_info['extStreams'][0]['streamUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size,'chat':None}
+            chats = recording_info['chats']
+            if len(chats) > 0:
+                chat = recording_info['chats'][0]['url']
+            else:
+                chat = None
+            recording_data = {'downloadUrl':recording_info['extStreams'][0]['streamUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size,'chat':chat}
     return recording_data
 
 
