@@ -255,7 +255,7 @@ def crearReporte_403(reporte):
 def crearReporteCollab(reporte):
     filename = './reports/Collab_Report_from_Course.csv'
     headers = [ 'Course ID', 'Course Name','Course UUID', 'Recording ID', 'Recording Name','Duration', 'Storage Size (MB)', 'Created Date']
-    file = open(filename, 'w')
+    file = open(filename, 'w', newline='', encoding='utf-8')
     writer = csv.writer(file)
     writer.writerow(headers)
     for x in range(len(reporte)):
