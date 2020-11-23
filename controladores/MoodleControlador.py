@@ -29,8 +29,11 @@ class MoodleControlador():
         r = requests.get(endpoint,headers=headers,verify=self.cert)
         if r.status_code == 200:
             jsonInfo = json.loads(r.text)
-            contexto_id = jsonInfo['results'][0]['id']
-            return contexto_id
+            if jsonInfo['size'] > 0:
+                contexto_id = jsonInfo['results'][0]['id']
+                return contexto_id
+            else:
+                return None
         else:
             print("Error Moodle ContextoLTI:" , str(r))
 

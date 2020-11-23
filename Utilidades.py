@@ -241,6 +241,25 @@ def crearReporte(reporte):
 
 
 
+def crearReporteMoodle(reporte):
+   filename = './reports/Collab_Moodle_Session_RecordingReport.csv'
+   header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
+   file = open(filename, 'w',newline='', encoding='utf-8')
+   writer = csv.writer(file)
+   writer.writerow(header)
+   for x in range(len(reporte)):
+      registro = reporte[x]
+      recording_id = registro[0]
+      recording_name = registro[1]
+      duration = calcularTiempo(int(registro[2]/1000))
+      storage = str(round(float(registro[3])/1000000, 2))
+      created = convertirFecha(registro[4])
+      writer.writerow([recording_id,recording_name,duration,storage,created])
+   file.close()
+   return "Report: Collab_Moodle_Session_RecordingReport.csv created!"
+
+
+
 def crearReporteCollabDownload(reporte):
    filename = './reports/Collab_Download_RecordingReport.csv'
    header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]

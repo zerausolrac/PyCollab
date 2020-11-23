@@ -13,7 +13,7 @@ if __name__ == "__main__":
     else:
         tiempo = ut.semanasAtiempo(param[2])
     if  param[0] != '' and param[1] == '':
-        print("Moodle Sesion Name")
+        print("Moodle Sesions...")
         moodlSession = ut.leerUUID(param[0])
         for sesion in moodlSession:
             nombre_session = webService.get_moodle_sesion_name(sesion)
@@ -28,7 +28,10 @@ if __name__ == "__main__":
                     for grabacion in lista_grabaciones:
                         report.append([grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
                     ut.downloadrecording(lista_grabaciones,nombre_session,nombre_session)
-        print(ut.crearReporte(report))
+        if len(report) > 0: 
+         print(ut.crearReporteMoodle(report))
+        else:
+         print('No recordings was found')   
     elif param[0] == '' and param[1] != '':
         print("Moodle LTI Integration Download:", param[1])
         moodle_ids = ut.leerUUID(param[1])
@@ -36,7 +39,10 @@ if __name__ == "__main__":
         grabaciones_id = []
         for moodle_id in moodle_ids:
             contexto_id = webService.get_moodle_grabaciones_contexto(moodle_id,tiempo)
-            contexto_ids.append(contexto_id)
+            if contexto_id == None:
+                print("sessionID no valido")
+            else:
+                contexto_ids.append(contexto_id)
         for ctx_id in contexto_ids:
             grabacionesIds = webService.get_moodle_grabaciones_id(ctx_id)
             grabaciones = ut.listaGrabaciones(grabacionesIds)
@@ -45,7 +51,11 @@ if __name__ == "__main__":
             else:
                 for grabacion in grabaciones:
                     report.append([grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
-                ut.downloadrecording(grabaciones,ctx_id,ctx_id)       
-        print(ut.crearReporte(report))
+                ut.downloadrecording(grabaciones,ctx_id,ctx_id)    
+        if len(report) > 0: 
+         print(ut.crearReporteMoodle(report))
+        else:
+         print('No recordings was found')   
+        
      
     
