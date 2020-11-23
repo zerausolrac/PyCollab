@@ -10,6 +10,8 @@ and get:
 </li>
 <li>Command line attributes depending on the scenario: Learn Course,Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 </li>
+
+
 </ul>
 
 
@@ -25,9 +27,18 @@ Will depent on Computer operation system how Python is referenced on command lin
 <br>
 
 
-## 2. Install requirements 
+## 2. Install requirements: 
+
+MacOS:
+
 ```
-pip3 install -r requerimientos.txt
+pip install -r requerimientos.txt
+```
+
+Windows:
+
+```
+python -m pip install -r requerimientos.txt
 ```
 
 ## 3. Add Blackboard Collaborate and Learn Credentials
