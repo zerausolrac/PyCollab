@@ -17,7 +17,7 @@ and get:
 
 
 
-## 1. Instalation Python
+## 1. Python Instalation 
 You need to have installed from Python 3.7 to Python 3.8.6 
 
 Will depent on Computer operation system how Python is referenced on command line tool:
@@ -26,11 +26,11 @@ Will depent on Computer operation system how Python is referenced on command lin
  <br> 
  - (HomeBrew) #brew install python3
 - normally python3 is the alias to run python scripts when install python 3.7+
+<br> 
 Windows OS: 
 <br> 
-<br> 
-- normally python is the alias to run python scripts when install python from version 3.7 to Python 3.8.6
-- Python 3.9+ do not support PEP 157 package instalation, so must be installed Python 3.8.6 (x86_64 or x86 installer depending on your computer processor)
+- Python 3.9+ still do not support PEP 157 package instalation, so must be installed Python 3.8.6 (x86_64 or x86 installer depending on your computer processor)
+- Normally python is the alias to run python scripts when install python from version 3.7 to Python 3.8.6
 <br>
 
 
