@@ -32,9 +32,9 @@ Windows OS:
 - Python 3.9+ still do not support PEP 157 package instalation, so must be installed Python 3.8.6 (x86_64 or x86 installer depending on your computer processor)
 - Normally python is the alias to run python scripts when install python from version 3.7 to Python 3.8.6
 <br>
+<br>
 
-
-## 2. Install requirements: 
+## 2. Install script requirements
 
 MacOS:
 
