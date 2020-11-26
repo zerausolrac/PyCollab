@@ -17,13 +17,20 @@ and get:
 
 
 
-## 1. Instalation
-You need to have installed Python 3.7+ 
+## 1. Instalation Python
+You need to have installed from Python 3.7 to Python 3.8.6 
 
 Will depent on Computer operation system how Python is referenced on command line tool:
 <br> 
-- Mac OS: normally python3 is the alias to run python scripts when install python 3.7+
-- Windows OS: normally python is the alias to run python scripts when install python 3.7+
+ Mac OS: 
+ <br> 
+ - (HomeBrew) #brew install python3
+- normally python3 is the alias to run python scripts when install python 3.7+
+Windows OS: 
+<br> 
+<br> 
+- normally python is the alias to run python scripts when install python from version 3.7 to Python 3.8.6
+- Python 3.9+ do not support PEP 157 package instalation, so must be installed Python 3.8.6 (x86_64 or x86 installer depending on your computer processor)
 <br>
 
 
@@ -36,6 +43,7 @@ pip install -r requerimientos.txt
 ```
 
 Windows:
+
 
 ```
 python -m pip install -r requerimientos.txt
