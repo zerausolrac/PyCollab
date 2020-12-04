@@ -88,7 +88,7 @@ def recording_id(url:str):
 
 def readCollabReport(fileName:str):
     recording_ids = []
-    with open(fileName) as f:
+    with open(fileName,encoding='utf-8') as f:
         columnas = f.readline()
     if 'RecordingLink' in columnas:
         with open(fileName, newline='', encoding='utf-8') as nline:
