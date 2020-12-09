@@ -119,7 +119,7 @@ def descargarGrabacion(url:str, fname:str):
     resp = requests.get(url,stream=True)
     total = int(resp.headers.get('content-length',0))
     progress_bar = tqdm(total=total, unit='iB', unit_scale=True,unit_divisor=1024)
-    with open(fname,'wb',encoding='utf-8') as file:
+    with open(fname,'wb') as file:
             for data in resp.iter_content(chunk_size=1024):
                 size = file.write(data)
                 progress_bar.update(size)
