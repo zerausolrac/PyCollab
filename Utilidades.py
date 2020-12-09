@@ -119,7 +119,7 @@ def descargarGrabacion(url:str, fname:str):
     resp = requests.get(url,stream=True)
     total = int(resp.headers.get('content-length',0))
     progress_bar = tqdm(total=total, unit='iB', unit_scale=True,unit_divisor=1024)
-    with open(fname,'wb') as file:
+    with open(fname,'wb',encoding='utf-8') as file:
             for data in resp.iter_content(chunk_size=1024):
                 size = file.write(data)
                 progress_bar.update(size)
@@ -389,7 +389,7 @@ def crearReporte_Recordings_403(reporte):
 
 def leerCursos(filename):
    cursos = []
-   with open(filename) as reader:
+   with open(filename,encoding='utf-8') as reader:
       for linea in reader:
          contenido = linea.rstrip()
          cursos.append(str(contenido))
@@ -399,7 +399,7 @@ def leerCursos(filename):
 
 def leerUUID(filename):
    uuids = []
-   with open(filename) as reader:
+   with open(filename,encoding='utf-8') as reader:
       for linea in reader:
          contenido = linea.rstrip()
          uuids.append(str(contenido))
@@ -408,7 +408,7 @@ def leerUUID(filename):
 
 def leerRecUUID(filename):
    uuids = []
-   with open(filename) as reader:
+   with open(filename,encoding='utf-8') as reader:
       for linea in reader:
          contenido = linea.rstrip()
          uuids.append(str(contenido))
