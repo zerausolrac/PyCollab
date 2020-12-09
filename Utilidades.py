@@ -175,8 +175,8 @@ def downloadOneRecording(recording, course_uuid):
     if recording != 403:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
-            chatFileName = 'Chat-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '')
+            filename = recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '') + '.mp4'
+            chatFileName = 'Chat-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '')
             fullpath = './downloads/'
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
