@@ -156,7 +156,7 @@ def downloadrecording(recording_list, name, course_uuid):
       for recording in recording_list:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = course_uuid + ' - ' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+            filename = course_uuid + '-' + recording['recording_id'] + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
             chatFileName = 'Chat-' + filename
             fullpath = './downloads/'
             print(fullpath + filename)
@@ -175,8 +175,8 @@ def downloadOneRecording(recording, course_id):
     if recording != 403:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = course_id + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '') + '.mp4'
-            chatFileName = 'Chat-' + course_id + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '')
+            filename = course_id + '-' + recording['recording_id'] + '-'+ recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '') + '.mp4'
+            chatFileName = 'Chat-' + course_id + '-' + recording['recording_id'] + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '')
             fullpath = './downloads/'
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
