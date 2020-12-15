@@ -68,10 +68,12 @@ edit content of Config.py file
 ```
 
 
-### Note
+### Note: Backboard Credentials / Integration on Learn
 
-In order to get the Learn credentials, go to developer.blackboard.com and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.Then on your Blackboard Learn environment, as admin role user, go to Rest API Integration a create an integration using data provided from developer.blackboard.com before.
+In order to get the Learn credentials, go to <i>developer.blackboard.com</i> and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.Then on your Blackboard Learn environment, as admin role user, go to Rest API Integration a create an integration using data provided from developer.blackboard.com before.<br>
+<p>Check <a href="https://github.com/zerausolrac/PyCollab/blob/master/LearnPyCollab.pdf">Learn Integration</a></p>
 
+### Note: Backboard Credentials for Collaborate
 
 Now, for Collaborate production they CAN and MUST create a ticket on behind the blackboard requesting their credentials.
 
