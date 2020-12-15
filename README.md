@@ -11,7 +11,7 @@ and get:
 <li>Command line attributes depending on the scenario: Learn Course,Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 </li>
 
-
+<li><b>This script is NOT supported on ehind the Blackboard.</b></li>
 </ul>
 
 
