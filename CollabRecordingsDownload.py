@@ -31,6 +31,7 @@ if __name__ == "__main__":
                 if recording_lista != None:
                     report_record = [recording['sessionOwner'],recording['recording'],recording_lista['recording_name'],recording_lista['duration'],recording_lista['size'],recording_lista['created']]
                     report.append(report_record)
+                    recording_lista['recordingId'] = recording['recording']
                     ut.downloadRecordingsUUID(recording_lista)
         if len(report) > 0: 
                 print(ut.crearReporte(report))

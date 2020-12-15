@@ -156,7 +156,7 @@ def downloadrecording(recording_list, name, course_uuid):
       for recording in recording_list:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = name + ' - ' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+            filename = course_uuid + ' - ' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
             chatFileName = 'Chat-' + filename
             fullpath = './downloads/'
             print(fullpath + filename)
@@ -171,12 +171,12 @@ def downloadrecording(recording_list, name, course_uuid):
             
 
 
-def downloadOneRecording(recording, course_uuid):
+def downloadOneRecording(recording, course_id):
     if recording != 403:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '') + '.mp4'
-            chatFileName = 'Chat-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '')
+            filename = course_id + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '') + '.mp4'
+            chatFileName = 'Chat-' + course_id + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '')
             fullpath = './downloads/'
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
@@ -195,7 +195,10 @@ def downloadOneRecording(recording, course_uuid):
 
 def downloadRecordingsUUID(recording_lista):
     if recording_lista != None:
-        filename = recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+        if 'recordingId' in recording_lista:
+            filename = recording_lista['recordingId'] + '-' +recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+        else:
+            filename = recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
         chatFileName = 'Chat-' + filename
         fullpath = './downloads/'
         print(fullpath + filename)
@@ -262,18 +265,19 @@ def crearReporteMoodle(reporte):
 
 def crearReporteCollabDownload(reporte):
    filename = './reports/Collab_Download_RecordingReport.csv'
-   header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
+   header = ["Course ID","Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
    file = open(filename, 'w',newline='', encoding='utf-8')
    writer = csv.writer(file)
    writer.writerow(header)
    for x in range(len(reporte)):
       registro = reporte[x]
-      recording_id = registro[0]
-      recording_name = registro[1]
-      duration = calcularTiempo(int(registro[2]/1000))
-      storage = str(round(float(registro[3])/1000000, 2))
-      created = convertirFecha(registro[4])
-      writer.writerow([recording_id,recording_name,duration,storage,created])
+      course_id = registro[0]
+      recording_id = registro[1]
+      recording_name = registro[2]
+      duration = calcularTiempo(int(registro[3]/1000))
+      storage = str(round(float(registro[4])/1000000, 2))
+      created = convertirFecha(registro[5])
+      writer.writerow([course_id,recording_id,recording_name,duration,storage,created])
    file.close()
    return "Report: Collab_Download_RecordingReport.csv created!"
 
@@ -282,18 +286,19 @@ def crearReporteCollabDownload(reporte):
 
 def crearReporte_403(reporte):
    filename = './reports/Collab_Download_RecordingReport_403.csv'
-   header = ["Recording ID", "Recording Name", "Detail"]
+   header = ["Course ID","Recording ID", "Recording Name", "Detail"]
    file = open(filename, 'w',newline='', encoding='utf-8')
    writer = csv.writer(file)
    writer.writerow(header)
    for x in range(len(reporte)):
       registro = reporte[x]
-      recording_id = registro[0]
-      recording_name = registro[1]
-      detail = registro[2]
-      writer.writerow([recording_id,recording_name,detail])
+      course_id = registro[0]
+      recording_id = registro[1]
+      recording_name = registro[2]
+      detail = registro[3]
+      writer.writerow([course_id,recording_id,recording_name,detail])
    file.close()
-   return "Report: recordingReport_403.csv created!"
+   return "Report: Collab_Download_RecordingReport_403.csv created!"
    
 
 

@@ -1,7 +1,7 @@
 # PyCollab
 
 
-Python Blackoboard Collaborate script to download recording based on Blackboard Learn Course ID, or Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
+Python Blackboard Collaborate script to download recording based on Blackboard Learn Course ID, or Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 and get:
 <ul>
 <li>Recording Report in a CSV file (Recording_ID, Storage Size, Duration, Creation Date, Duration) on /reports folder
@@ -24,7 +24,7 @@ Will depent on Computer operation system how Python is referenced on command lin
 <br> 
  Mac OS: 
  <ul> 
- <li>(HomeBrew) brew install python3</li>
+ <li>(HomeBrew)  brew install python3</li>
  <li>normally python3 is the alias to run python scripts when install python 3.7+</li>
 </ul> 
 Windows OS: 
