@@ -49,16 +49,21 @@ class AuthControlador():
             parsed_json = json.loads(r.text)
             self.cache = TTLCache(maxsize=1, ttl=parsed_json['expires_in'])
             self.cache['token'] = parsed_json['access_token']
+        elif r.status_code == 401:
+            print("Your Blackboard Learn credentials are not valid!")
+        elif r.status_code == 400:
+            print("Your json Config.py is not valid")
         else:
             print("[auth:setToken()] ERROR: " + str(r))
 
 
-
     def getToken(self):
          try:
-             token = self.cache['token']
-
-             return token
+             if self.cache != None:
+                token = self.cache['token']
+                return token
+             else:
+                sys.exit()
          except KeyError:
              self.setToken()
     

@@ -41,7 +41,7 @@ if __name__ == "__main__":
             print('No private recording was found')
 
     elif param[0] == '' and param[1] != '':
-        print("UUID Recordings:")
+        print("Course Recordings from " + tiempo)
         course_uuids = ut.leerUUID(param[1])
         for cuuid in course_uuids:
             grabacionesJson = webService.getGrabaciones(cuuid,tiempo)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 for grabacion in grabaciones:
                     if 'msg' not in grabacion:
                         ut.downloadOneRecording(grabacion,cuuid)
-                        report.append([grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
+                        report.append([cuuid,grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
                     else:
                         report_403.append([grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])       
         if len(report) > 0: 

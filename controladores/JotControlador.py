@@ -51,7 +51,7 @@ class JotControlador():
         return self.secret   
     
     def setJot(self):
-       #Crear la petición ocn el header, payload y signature
+       #Crear la petición con el header, payload y signature
        endpoint = 'https://' + self.domain + '/token'
        if self.jcache != None:
             try:
@@ -63,18 +63,27 @@ class JotControlador():
         
        r = requests.post(endpoint, data=self.payload, auth=(self.key, self.secret), verify=self.cert)
        if r.status_code == 200:
-            json_valores = json.loads(r.text)
-            self.jcache = TTLCache(maxsize=1, ttl=json_valores['expires_in'])
-            self.jcache['jwtoken'] = json_valores['access_token']
+          json_valores = json.loads(r.text)
+          self.jcache = TTLCache(maxsize=1, ttl=json_valores['expires_in'])
+          self.jcache['jwtoken'] = json_valores['access_token']
+       elif r.status_code == 401:
+          print("Your Blackboard Collaborate credentials are not valid, check it with developers@blackboard.com")
+         
+       elif r.status_code == 400:
+            print("Your json Config.py is not valid")
+            
        else:
-            print("[auth:jotToken()] ERROR: " + str(r))
+          print("[auth:jotToken()] ERROR: " + str(r))
 
 
 
     def getJot(self):
       try:
-            token = self.jcache['jwtoken']
-            return token
+            if self.jcache != None:
+               token = self.jcache['jwtoken']
+               return token
+            else:
+               sys.exit()
       except KeyError:
             self.setJot()
             return self.jcache['jwtoken']   

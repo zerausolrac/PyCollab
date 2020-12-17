@@ -39,7 +39,6 @@ class WebService():
     def getJot(self):
         self.jsesion = JotControlador.JotControlador(self.DOMAIN_C,self.KEY_C, self.SECRET_C,self.CERT)
         self.jsesion.setJot()
-        #print(self.jsesion.getJot())
         return self.jsesion.getJot() 
 
 

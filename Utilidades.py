@@ -265,7 +265,7 @@ def crearReporteMoodle(reporte):
 
 def crearReporteCollabDownload(reporte):
    filename = './reports/Collab_Download_RecordingReport.csv'
-   header = ["Course ID","Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
+   header = ["Course ID/UUID","Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
    file = open(filename, 'w',newline='', encoding='utf-8')
    writer = csv.writer(file)
    writer.writerow(header)
