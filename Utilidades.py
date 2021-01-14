@@ -130,21 +130,25 @@ def descargarGrabacion(url:str, fname:str):
 def crearArchivoChat(url:str,fname:str):
     chatFile = requests.get(url, stream=True)
     if chatFile.status_code == 200:
-        jsonInfo = json.loads(chatFile.text)
-        #CSV
-        filename =  fname + '.csv'
-        header = ["Participant id", "Student Name", "Message"]
-        file = open(filename, 'w', encoding="utf-8")
-        writer = csv.writer(file)
-        writer.writerow(header)
-        for jsonRow in jsonInfo:
-            writer.writerow([jsonRow['id'],jsonRow['userName'], jsonRow['body']])
-        file.close()
-        total = int(chatFile.headers.get('content-length',0))
-        with tqdm(total=total) as progress_bar:
-            for size in trange(total):
-                progress_bar.update(size)
-        progress_bar.close()
+        try:
+            jsonInfo = json.loads(chatFile.text)
+            #CSV
+            filename =  fname + '.csv'
+            header = ["Participant id", "Student Name", "Message"]
+            file = open(filename, 'w', encoding="utf-8")
+            writer = csv.writer(file)
+            writer.writerow(header)
+            for jsonRow in jsonInfo:
+                writer.writerow([jsonRow['id'],jsonRow['userName'], jsonRow['body']])
+            file.close()
+            total = int(chatFile.headers.get('content-length',0))
+            with tqdm(total=total) as progress_bar:
+                for size in trange(total):
+                    progress_bar.update(size)
+            progress_bar.close()
+        except json.decoder.JSONDecodeError:
+            print('Chat file is empty')
+            pass
     else:
         print("Chat URL is not valid:", str(chatFile))
     
@@ -189,6 +193,23 @@ def downloadOneRecording(recording, course_id):
         else:
             return None
      
+
+def downloadOneRecordingOnly(recording):
+    recording_data = webService.get_recording_data(recording['recording_id'])
+    if recording_data != None:
+        filename =  recording['recording_id'] + '-'+ recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') + '.mp4'
+        chatFileName = 'Chat-' + '-' + recording['recording_id'] + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '')
+        fullpath = './downloads/'
+        print(fullpath + filename)
+        descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
+        if len(recording_data['chats']) == 0:
+            print("No chat on the recording")
+        else:
+            print("Downloaling chat")
+            downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+        return True
+    else:
+        return None
 
 
 
@@ -531,6 +552,23 @@ def mainMinutes(argv):
 
 
 
+def mainRecfromid(argv):
+    attendanceFile = ''
+    try:
+        opts,args = getopt.getopt(argv,"hf:", ["list="])
+    except getopt.GetoptError:
+        print("The correct params are:")
+        print('CollabRecfromid.py -f <recodidingids_list.txt>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print('CollabRecfromid.py -f <recodidingids_list.txt>')
+            sys.exit()
+        elif opt in ('-f', '--list'):
+            attendanceFile = arg
+    return [attendanceFile]
+
+
 
 def calcularTiempo(s):
    m, s = divmod(s,60)
@@ -576,3 +614,15 @@ def collabMinutes(fileName:str):
     else:
         return None
     f.close 
+
+
+def listRecordingids(filename):
+    recids = []
+    with open(filename,encoding='utf-8') as reader:
+        for linea in reader:
+            contenido = linea.rstrip()
+            recids.append(str(contenido))
+    reader.close()
+    return recids
+
+
