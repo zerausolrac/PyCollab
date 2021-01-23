@@ -30,7 +30,7 @@ if __name__ == "__main__":
             else:
                 for grabacion in grabaciones:
                     if 'msg' not in grabacion:
-                        #ut.downloadOneRecording(grabacion,curso)
+                        ut.downloadOneRecording(grabacion,curso)
                         report.append([cursoid,grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
                     else:
                         report_403.append([cursoid,grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])      
@@ -54,7 +54,7 @@ if __name__ == "__main__":
             else:
                 for grabacion in grabaciones:
                     if 'msg' not in grabacion:
-                        #ut.downloadOneRecording(grabacion,cuuid)
+                        ut.downloadOneRecording(grabacion,cuuid)
                         report.append([cuuid,grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
                     else:
                         report_403.append([cuuid,grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])       
