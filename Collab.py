@@ -18,8 +18,11 @@ if __name__ == "__main__":
         print("Course Recordings from " + tiempo)
         cursos_id = ut.leerCursos(param[0])
         for curso in cursos_id:
-            course_uuids.append(webService.getUUID(curso))
-        for cuuid in course_uuids:
+            course_uuids.append([{'uuid':webService.getUUID(curso), 'cursoid':curso}])
+        
+        for elemento in course_uuids:
+            cuuid = elemento[0]['uuid']
+            cursoid = elemento[0]['cursoid']
             grabacionesJson = webService.getGrabaciones(cuuid,tiempo)
             grabaciones = ut.listaGrabaciones(grabacionesJson)
             if grabaciones is None:
@@ -27,10 +30,10 @@ if __name__ == "__main__":
             else:
                 for grabacion in grabaciones:
                     if 'msg' not in grabacion:
-                        ut.downloadOneRecording(grabacion,curso)
-                        report.append([curso,grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
+                        #ut.downloadOneRecording(grabacion,curso)
+                        report.append([cursoid,grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
                     else:
-                        report_403.append([curso,grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])          
+                        report_403.append([cursoid,grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])      
         if len(report) > 0: 
             print(ut.crearReporteCollabDownload(report))
         else:
@@ -39,7 +42,7 @@ if __name__ == "__main__":
             print(ut.crearReporte_403(report_403))
         else:
             print('No private recording was found')
-
+        
     elif param[0] == '' and param[1] != '':
         print("Course Recordings from " + tiempo)
         course_uuids = ut.leerUUID(param[1])
@@ -51,10 +54,10 @@ if __name__ == "__main__":
             else:
                 for grabacion in grabaciones:
                     if 'msg' not in grabacion:
-                        ut.downloadOneRecording(grabacion,cuuid)
+                        #ut.downloadOneRecording(grabacion,cuuid)
                         report.append([cuuid,grabacion['recording_id'], grabacion['recording_name'],grabacion['duration'],grabacion['storageSize'],grabacion['created']])
                     else:
-                        report_403.append([grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])       
+                        report_403.append([cuuid,grabacion['recording_id'], grabacion['recording_name'],'403 - private recording'])       
         if len(report) > 0: 
             print(ut.crearReporteCollabDownload(report))
         else:
