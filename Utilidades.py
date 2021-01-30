@@ -234,14 +234,21 @@ def downloadRecordingsUUID(recording_lista):
 
 
 
-
-
 def downloadChats(chat_data,name):
     chat_url = chat_data['url']
     crearArchivoChat(chat_url,name)
 
 def downloadChatsFromURL(chat_url,name):
     crearArchivoChat(chat_url,name)
+
+
+
+def deleteRecording(recording_id):
+    delete_info = webService.delete_recording(recording_id)
+    if delete_info != None:
+        return True
+    else:
+        return delete_info
 
 
 
@@ -303,6 +310,23 @@ def crearReporteCollabDownload(reporte):
    return "Report: Collab_Download_RecordingReport.csv created!"
 
 
+def crearReporteCollabRecIdDownload(reporte):
+   filename = './reports/Collab_Download_RecordingsId_Report.csv'
+   header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
+   file = open(filename, 'w',newline='', encoding='utf-8')
+   writer = csv.writer(file)
+   writer.writerow(header)
+   for x in range(len(reporte)):
+      registro = reporte[x]
+      
+      recording_id = registro[0]
+      recording_name = registro[1]
+      duration = calcularTiempo(int(registro[2]/1000))
+      storage = str(round(float(registro[3])/1000000, 2))
+      created = convertirFecha(registro[4])
+      writer.writerow([recording_id,recording_name,duration,storage,created])
+   file.close()
+   return "Report: Collab_Download_RecordingsId_Report.csv created!"
 
 
 def crearReporte_403(reporte):
@@ -409,6 +433,20 @@ def crearReporte_Recordings_403(reporte):
         writer.writerow([course_id,couse_name,course_uuid,recording_id,recording_name,detail])
     file.close()
 
+
+def crearReporteDelete(reporte):
+    filename = './reports/Collab_Delete_Recordings.csv'
+    headers = [ 'Recording Id', 'Status']
+    file = open(filename, 'w',newline='', encoding='utf-8')
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for x in range(len(reporte)):
+        registro = reporte[x]
+        recording_id = registro[0]
+        status = registro[1]
+        writer.writerow([recording_id,status])
+    file.close()
+    return "Report: Collab_Delete_Recordings.csv created!"
 
 
 
@@ -523,11 +561,11 @@ def mainRecordings(argv):
         opts,args = getopt.getopt(argv,"hf:", ["recordings="])
     except getopt.GetoptError:
         print("The correct params are:")
-        print('CollabRecordings.py -t <RecordingsReport.csv>')
+        print('CollabRecordings.py -f <RecordingsReport.csv>')
         sys.exit(2)
     for opt,arg in opts:
         if opt == '-h':
-            print('CollabRecordings.py -t <RecordingsReport.csv>')
+            print('CollabRecordings.py -f <RecordingsReport.csv>')
             sys.exit()
         elif opt in ('-f', '--recordings'):
             recordingsFile = arg
@@ -568,6 +606,22 @@ def mainRecfromid(argv):
             attendanceFile = arg
     return [attendanceFile]
 
+
+def mainDelete(argv):
+    attendanceFile = ''
+    try:
+        opts,args = getopt.getopt(argv,"hf:", ["list="])
+    except getopt.GetoptError:
+        print("The correct params are:")
+        print('CollabDeleteRecordings.py -f <recodidingids_list.txt>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print('CollabDeleteRecordings.py -f <recodidingids_list.txt>')
+            sys.exit()
+        elif opt in ('-f', '--list'):
+            attendanceFile = arg
+    return [attendanceFile]
 
 
 def calcularTiempo(s):

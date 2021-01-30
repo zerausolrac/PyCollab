@@ -108,6 +108,11 @@ class WebService():
         recordingid = sessions.get_grabacion_UUID_data(recording_id)
         return recordingid
 
+    def delete_recording(self,recording_id):
+        sessions = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        delete_info = sessions.delete_recording(recording_id)
+        return delete_info
+
 
 
     def get_moodle_sesion_name(self,sesionId):
