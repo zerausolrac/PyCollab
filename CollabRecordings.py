@@ -37,7 +37,7 @@ if __name__ == "__main__":
             print('No downloading was executed')
 
         if len(reporte_403) > 0:
-            print(ut.crearReporte_403(reporte_403))
+            print(ut.crearReporte_Recordings_403(reporte_403))
         else:
             print('No private recording was found')
     else:
