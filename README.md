@@ -193,6 +193,48 @@ python3 CollabRecordingsDownload.py -f RecordingsReport.csv
 <br>
 
 
+
+## Delete recordings
+### Considerations
+
+<b>About deletion process</b>
+<ul>
+<li>
+ It is soft-deletion, this means, deletion process will remove recording after 30 days from deletion day
+</li>
+<li>
+ When deleted from API, It is not taken in count for total calculation of storage for Collaborate Entitlements
+</li>
+<li>
+On reporting only takes in count Blackboard Learn-Collab in Blackboard Data, there is no way to caculate Collab Scheduler total storage using API
+</li>
+<li>
+There is no way to restore  a deleted recording  form Collab API
+</li>
+</ul>
+
+```
+python3 CollabDeleteRecordings.py -f recordingsid_list.txt   
+```
+<li>
+<b>Where recordingids_list.txt </b> is a text-plain o-column-list with all recordingsId that will be deleted from Blackboard Collaborate instance.
+
+</li>
+
+
+
+
+
+<pre>
+  ____    _                  _      _                                  _ 
+ |  _ \  | |                | |    | |                                | |
+ | |_) | | |   __ _    ___  | | __ | |__     ___     __ _   _ __    __| |
+ |  _ <  | |  / _` |  / __| | |/ / | '_ \   / _ \   / _` | | '__|  / _` |
+ | |_) | | | | (_| | | (__  |   <  | |_) | | (_) | | (_| | | |    | (_| |
+ |____/  |_|  \__,_|  \___| |_|\_\ |_.__/   \___/   \__,_| |_|     \__,_|
+                                                                             
+</pre>
+
 # Video
 
 <a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new">English</a>
