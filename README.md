@@ -235,7 +235,7 @@ python3 CollabDeleteRecordings.py -f recordingsid_list.txt
                                                                              
 </pre>
 
-# Video
+# Tutorials
 
 <a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new">English</a>
 <br>
