@@ -211,6 +211,9 @@ On reporting only takes in count Blackboard Learn-Collab in Blackboard Data, the
 <li>
 There is no way to restore  a deleted recording  form Collab API
 </li>
+<li>
+Use this feature at your own risk.
+</li>
 </ul>
 
 ```
