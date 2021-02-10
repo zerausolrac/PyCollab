@@ -14,7 +14,7 @@ if __name__ == "__main__":
             if ut.deleteRecording(recording) == True:
                 print(recording + ' was deleted.')
                 report.append([recording, 'deleted'])
-            if ut.deleteRecording(recording) == False:
+            elif ut.deleteRecording(recording) == False:
                 print(recording + ' not found.')
                 report.append([recording, 'not found'])
             elif ut.deleteRecording(recording) == None:
