@@ -135,12 +135,17 @@ def crearArchivoChat(url:str,fname:str):
             #CSV
             filename =  fname + '.csv'
             header = ["Participant id", "Student Name", "Message"]
-            file = open(filename, 'w', encoding="utf-8")
-            writer = csv.writer(file)
-            writer.writerow(header)
-            for jsonRow in jsonInfo:
-                writer.writerow([jsonRow['id'],jsonRow['userName'], jsonRow['body']])
-            file.close()
+            try:
+                file = open(filename, 'w', encoding="utf-8")
+                writer = csv.writer(file)
+                writer.writerow(header)  
+                for jsonRow in jsonInfo:
+                    writer.writerow([jsonRow['id'],jsonRow['userName'], jsonRow['body']])
+                file.close()
+            except OSError as oserror:
+                if oserror.errno == 36:
+                    print("Long file name")
+                    pass
             total = int(chatFile.headers.get('content-length',0))
             with tqdm(total=total) as progress_bar:
                 for size in trange(total):
@@ -160,8 +165,8 @@ def downloadrecording(recording_list, name, course_uuid):
       for recording in recording_list:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = course_uuid + '-' + recording['recording_id'] + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') + '.mp4'
-            chatFileName = 'Chat-' + filename
+            filename = course_uuid + '-' + recording['recording_id'] + '-' + checkLongFilenameVideo(' ', recording['recording_name'])
+            chatFileName = 'Chat-' + course_uuid +  '-' + recording['recording_id'] + '-' + checkLongFilenameChat(' ',recording['recording_name'])
             fullpath = './downloads/'
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
@@ -179,8 +184,8 @@ def downloadOneRecording(recording, course_id):
     if recording != 403:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = course_id + '-' + recording['recording_id'] + '-'+ recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') + '.mp4'
-            chatFileName = 'Chat-' + course_id + '-' + recording['recording_id'] + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '')
+            filename = course_id + '-' + recording['recording_id'] + '-' +  checkLongFilenameVideo(course_id, recording['recording_name'])
+            chatFileName = 'Chat-' + course_id + '-' + recording['recording_id'] + '-' + checkLongFilenameChat(course_id,recording['recording_name'])
             fullpath = './downloads/'
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
@@ -197,8 +202,8 @@ def downloadOneRecording(recording, course_id):
 def downloadOneRecordingOnly(recording):
     recording_data = webService.get_recording_data(recording['recording_id'])
     if recording_data != None:
-        filename =  recording['recording_id'] + '-'+ recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') + '.mp4'
-        chatFileName = 'Chat-' + '-' + recording['recording_id'] + '-' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '')
+        filename =  recording['recording_id'] + '-' +  checkLongFilenameVideo(' ', recording['recording_name'])
+        chatFileName = 'Chat-' + recording['recording_id'] + '-' + checkLongFilenameChat(' ',recording['recording_name'])
         fullpath = './downloads/'
         print(fullpath + filename)
         descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
@@ -217,9 +222,9 @@ def downloadOneRecordingOnly(recording):
 def downloadRecordingsUUID(recording_lista):
     if recording_lista != None:
         if 'recordingId' in recording_lista:
-            filename = recording_lista['recordingId'] + '-' +recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') + '.mp4'
+            filename =  recording_lista['recordingId'] + '-' +  checkLongFilenameVideo('', recording_lista['recording_name'])
         else:
-            filename = recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') + '.mp4'
+            filename = checkLongFilenameVideo(recording_lista['recordingId'], recording_lista['recording_name'])
         chatFileName = 'Chat-' + filename
         fullpath = './downloads/'
         print(fullpath + filename)
@@ -249,6 +254,22 @@ def deleteRecording(recording_id):
         return True
     else:
         return delete_info
+
+
+
+def checkLongFilenameVideo(courseId:str, fname:str):
+    filename = fname.replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') + '.mp4'
+    if len(filename) > 160:
+        return courseId
+    else:
+        return filename
+
+def checkLongFilenameChat(courseId:str, fname:str):
+    filename = fname.replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace('|', '').replace('"', '') 
+    if len(filename) > 160:
+        return " "
+    else:
+        return filename
 
 
 
@@ -480,6 +501,9 @@ def leerRecUUID(filename):
    return uuids
 
 
+
+
+
 def main(argv):
     archivoCursos = ''
     archivoUUID = ''
@@ -590,6 +614,24 @@ def mainMinutes(argv):
 
 
 
+
+def mainStorage(argv):
+    recordingFile = ''
+    try:
+        opts,args = getopt.getopt(argv,"hf:", ["recordings="])
+    except getopt.GetoptError:
+        print("The correct params are:")
+        print('CollabStorage.py -t <RecordingReport.csv>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print('CollabStorage.py -t <RecordingReport.csv>')
+            sys.exit()
+        elif opt in ('-f', '--recordings'):
+            recordingFile = arg
+    return [recordingFile]
+
+
 def mainRecfromid(argv):
     attendanceFile = ''
     try:
@@ -668,6 +710,26 @@ def collabMinutes(fileName:str):
     else:
         return None
     f.close 
+
+
+def collabStorage(fileName:str, ltiAccount:str):
+    storage = 0.0
+    with open(fileName, encoding='utf-8') as f:
+        columnas = f.readline()
+    if 'RecordingDuration' in columnas:
+        with open(fileName, newline='', encoding='utf-8') as nline:
+            registros = csv.DictReader(nline)
+            for registro in registros:
+                #minutes += collabTimeToMinutes(registro['StorageUsageGigabytes'])
+                if registro['SessionOwner'] == ltiAccount:
+                    storage += float(registro['StorageUsageGigabytes'])
+            fstorage = round(storage)
+            return '{:,}'.format(storage)
+        nline.close()
+    else:
+        return None
+    f.close 
+
 
 
 def listRecordingids(filename):
