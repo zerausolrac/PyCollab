@@ -123,13 +123,13 @@ python3 Collab.py -e learn_uuids.txt -w 10
 
 <b>Report Learn-Collaborate</b>
 <li>
-If you need to know about recording storage size, duration and  recording ID before download any recording you can create a report, where -f is point to learn_courses.txt file that have Blackboard Learn courses ID listed by row.
+If you need to know about recording storage size, duration and  recording ID before download any recording you can create a report, where -f is point to learn_courses.txt file that have Blackboard Learn courses ID listed by row, and -w is a value of weeks back for as starting point of searching for recordings.
 <b>Note:</b>If the recording has public_access disabled, the recording won't be readed by script and will 403 report will be generated with list recording_id.
 
 </li>
 
 ```
-python3 CollabReport.py -f learn_courses.txt
+python3 CollabReport.py -f learn_courses.txt -w 10
 ```
 
 
