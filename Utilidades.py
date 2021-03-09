@@ -63,19 +63,31 @@ def listaGrabacionCollabData(recording_info):
         if 'mediaDownloadUrl' in recording_info:
             size = recording_storageSize(recording_info['mediaDownloadUrl'])
             chats = recording_info['chats']
+            downloadUrl = None
             if len(chats) > 0:
                 chat = recording_info['chats'][0]['url']
             else:
                 chat = None
             recording_data = {'downloadUrl':recording_info['mediaDownloadUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size, 'chat':chat}
         else:
-            size = recording_storageSize(recording_info['extStreams'][0]['streamUrl'])
-            chats = recording_info['chats']
-            if len(chats) > 0:
-                chat = recording_info['chats'][0]['url']
+            try:
+                downloadUrl = recording_info['extStreams'][0]['streamUrl']
+                size = recording_storageSize(downloadUrl)
+                try:
+                    chats = recording_info['chats']
+                    if len(chats) > 0:
+                        chat = recording_info['chats'][0]['url']
+                    else:
+                        chat = None
+                except KeyError:
+                    chat = None
+            except KeyError:
+                size : 0 
+            if downloadUrl != None:
+                recording_data = {'downloadUrl':downloadUrl, 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size,'chat':chat}
             else:
-                chat = None
-            recording_data = {'downloadUrl':recording_info['extStreams'][0]['streamUrl'], 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size,'chat':chat}
+                recording_data = {'downloadUrl': None, 'recording_name':recording_info['name'],'duration':recording_info['duration'],'created':recording_info['created'],'size':size,'chat':chat}
+            
     return recording_data
 
 
@@ -691,7 +703,6 @@ def collabTimeToMinutes(stime:str):
     hours = float(ctime[0])*60
     minutes = float(ctime[1])
     seconds = float(ctime[2])/60
-    #return (ctime.hour*60 + ctime.minute + ctime.second/60)
     return round(hours + minutes + seconds)
     
 
@@ -710,6 +721,62 @@ def collabMinutes(fileName:str):
     else:
         return None
     f.close 
+
+
+def collabMinutesLoginGroups(fileName:str,login_gropus):
+    minutesByLoginGroup = convertList2Dic(login_gropus)
+    with open(fileName, newline='', encoding='utf-8') as nline:
+        registers = csv.DictReader(nline)
+        for register in registers:
+            if register['SessionOwner'] in login_gropus:
+                data = str2Minutes(register['RecordingDuration'])
+                if data != None:
+                    minutesByLoginGroup[register['SessionOwner']] += data
+                #minutesByLoginGroup[register['SessionOwner']] += 1   
+    nline.close()
+    return minutesByLoginGroup
+
+
+def convertList2Dic(aList):
+    fDict = {aList[idx]:0 for idx in range(0,len(aList))}
+    return fDict    
+
+def str2Minutes(t):
+    s = str(t)
+    total = 0
+    times = s.split(':')
+    if len(times) == 1 and times[0] == '':
+        pass 
+    else:
+        horas2min = float(times[0]) * 60
+        mins = float(times[1])
+        seg2min = float(times[2]) / 60
+        total = round(horas2min + mins + seg2min)
+    return total
+    
+    
+
+
+def collabLoginGroup(fileName:str):
+    loginGroup = []
+    sessionOwners = []
+    with open(fileName, encoding='utf-8') as f:
+        columnas = f.readline()
+    if 'SessionOwner' in columnas:
+        with open(fileName, newline='', encoding='utf-8') as nline:
+            registers = csv.DictReader(nline)
+            for register in registers:
+                sessionOwners.append(register['SessionOwner'])
+            loginGroup = list(set(sessionOwners))
+            return loginGroup
+        nline.close()
+    else:
+        return None
+    f.close 
+
+
+
+
 
 
 def collabStorage(fileName:str, ltiAccount:str):
