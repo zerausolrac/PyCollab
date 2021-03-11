@@ -430,7 +430,7 @@ def crearReporteCollabRecordings(reporte):
 
 
 def crearReporteCollab_403(reporte):
-    filename = './reports/Collab_Report_from_Course_403.csv'
+    filename = './reports/Collab_Report_from_Course_error.csv'
     headers = [ 'Course ID', 'Course Name','Course UUID', 'Recording ID', 'Recording Name','Detail']
     file = open(filename, 'w',newline='', encoding='utf-8')
     writer = csv.writer(file)
@@ -445,12 +445,12 @@ def crearReporteCollab_403(reporte):
         detail = registro[5]
         writer.writerow([course_id,couse_name,course_uuid,recording_id,recording_name,detail])
     file.close()
-    return "Report: Collab_Report_from_Course_403.csv created!"
+    return "Report: Collab_Report_from_Course_error.csv created!"
 
 
 
 def crearReporte_Recordings_403(reporte):
-    filename = './reports/Collab_Report_Recordings_403.csv'
+    filename = './reports/Collab_Report_Recordings_error.csv'
     headers = [ 'OwnerSession', 'Session Name','Session ID', 'Recording ID', 'Recording Name','Detail']
     file = open(filename, 'w',newline='', encoding='utf-8')
     writer = csv.writer(file)
@@ -465,6 +465,7 @@ def crearReporte_Recordings_403(reporte):
         detail = registro[5]
         writer.writerow([course_id,couse_name,course_uuid,recording_id,recording_name,detail])
     file.close()
+    return "Report: Collab_Download_RecordingReport_error.csv created!"
 
 
 def crearReporteDelete(reporte):

@@ -24,7 +24,7 @@ if __name__ == "__main__":
                             recording['sessionId'],
                             recording['recording'],
                             recording['recName'],
-                            '403: Not allowed, private recording'
+                            'Not read access or resource do not exist'
                         ])        
             else:
                 recording_lista = ut.listaGrabacionCollabData(grabacion)
